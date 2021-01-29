@@ -32,7 +32,8 @@ int main(int argc, char *argv[])
     int clock_gettime(clockid_t clk_id, struct timespec *tp);
     long long int i, j, k;
     long long int time_sec, time_ns;
-    
+    float sum;
+
     i = j = k = 0;
     
     // get start time
@@ -44,9 +45,10 @@ int main(int argc, char *argv[])
     // one second to run. For example, figure out how many times the computer
     // can execute the sin(x) function inside a loop, where x changes each
     // time sin(x) is called, add up the values of sin(x). */
-    
-    
-    
+    for (i=0;i<34570108;i++){
+    	sum=sum+sin(i);
+    }
+
     // get end time
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time2);
     
@@ -54,12 +56,12 @@ int main(int argc, char *argv[])
     // ADD CODE HERE to print something you computed in between the two calls
     // to clock_gettime, such as a sum. (to understand why, refer to the
     // test_O_level.c part of the assignment)
-    
+    printf("sum is %f\n",sum);
     
     
     // compute elapsed time and print.
-    time_sec = 0; // MODIFY: Replace "0" with a call to "diff()" function below
-    time_ns  = 0; // MODIFY: Replace "0" with another call to "diff()" function below
+    time_sec = diff(time1,time2).tv_sec; // MODIFY: Replace "0" with a call to "diff()" function below
+    time_ns  = diff(time1,time2).tv_nsec; // MODIFY: Replace "0" with another call to "diff()" function below
     
     printf("that took %ld sec and %ld nsec (%ld.%09ld sec)\n", time_sec, time_ns, time_sec, time_ns);
     
