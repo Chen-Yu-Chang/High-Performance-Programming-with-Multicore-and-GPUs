@@ -1,5 +1,6 @@
-/****************************************************************************/
-// gcc -O0 test_psum.c -lm -lrt -o test_psum
+/******************************************************************************/
+
+// gcc -O0 -o test_psum test_psum.c -lrt
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,56 +8,49 @@
 #include <time.h>
 #include <math.h>
 
-#define MAX_SIZE 10000000
+#define SIZE 10000000
+#define ITERS 20
+#define DELTA 10
 
-/****************************************************************************/
-int main(int argc, char *argv[])
+/******************************************************************************/
+main(int argc, char *argv[])
 {
+    struct timespec diff(struct timespec start, struct timespec end);
+    struct timespec time1, time2;
+    struct timespec time_stamp[2*ITERS+1], times[2*ITERS+1];
     int clock_gettime(clockid_t clk_id, struct timespec *tp);
     void psum1(float a[], float p[], long int n);
     void psum2(float a[], float p[], long int n);
     float *in, *out;
     long int i, j, k;
-    struct timespec diff(struct timespec start, struct timespec end);
-    struct timespec t1, t2;
-    long long int *p1, *p2;
-    long long int sec, ns;
     
     // initialize
-    in = (float *) malloc(MAX_SIZE * sizeof(*in));
-    out = (float *) malloc(MAX_SIZE * sizeof(*out));
-    p1 = malloc(MAX_SIZE * sizeof(*p1));
-    p2 = malloc(MAX_SIZE * sizeof(*p2));
-    for (i = 0; i < MAX_SIZE; i++) in[i] = (float)(i);
+    in = (float *) malloc(SIZE * sizeof(*in));
+    out = (float *) malloc(SIZE * sizeof(*out));
+    for (i = 0; i < SIZE; i++) in[i] = (float)(i);
     
     // process psum1 for various array sizes and collect timing
-    for (j = 0; j < 10000000; j+=100) {
-        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &t1);
-        psum1(in, out, j);
-        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &t2);
-        printf("psum: %f\n", out[j]);
-        sec = diff(t1, t2).tv_sec;
-        ns = diff(t1, t2).tv_nsec;
-        p1[j] = ns;
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_stamp[0]);
+    for (i = 0; i < ITERS; i++) {
+        psum1(in, out, DELTA*(i+1));
+        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_stamp[i+1]);
     }
     
-    // process psum2 for various array sizes and collect timing
-    for (j = 0; j < 10000000; j+=100) {
-        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &t1);
-        psum2(in, out, j);
-        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &t2);
-        printf("psum: %f\n", out[j]);
-        sec = diff(t1, t2).tv_sec;
-        ns = diff(t1, t2).tv_nsec;
-        p2[j] = ns;
+    // process psum2 for various array sizes
+    for (; i < 2*ITERS; i++) {
+        psum2(in, out, DELTA*(i-ITERS+1));
+        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_stamp[i+1]);
     }
     
     // output timing
-    for (k = 0; k < 10000000; k+=100) {
-        printf("%ld, %lld, %ld, %lld\n", k, p1[k], k, p2[k]);
+    for (i = 0; i < ITERS; i++) {
+        printf("\n %d", (i+1)*DELTA);
+        printf(",  %d", diff(time_stamp[i],time_stamp[i+1]).tv_nsec);
+        printf(",  %d", diff(time_stamp[i+ITERS],time_stamp[i+ITERS+1]).tv_nsec);
     }
     
-} /* end of main() */
+    printf("\n");
+}/* end main */
 
 
 void psum1(float a[], float p[], long int n)
@@ -97,3 +91,4 @@ struct timespec diff(struct timespec start, struct timespec end)
     }
     return temp;
 }
+
