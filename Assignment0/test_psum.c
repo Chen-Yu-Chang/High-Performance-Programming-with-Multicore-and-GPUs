@@ -25,9 +25,9 @@ int main(int argc, char *argv[])
     // initialize
     in = (float *) malloc(MAX_SIZE * sizeof(*in));
     out = (float *) malloc(MAX_SIZE * sizeof(*out));
-    for (i = 0; i < MAX_SIZE; i++) in[i] = (float)(i);
     p1 = malloc(MAX_SIZE * sizeof(*p1));
     p2 = malloc(MAX_SIZE * sizeof(*p2));
+    for (i = 0; i < MAX_SIZE; i++) in[i] = (float)(i);
     
     // process psum1 for various array sizes and collect timing
     for (j = 0; j < 10000000; j+=100) {
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     
     // output timing
     for (k = 0; k < 10000000; k+=100) {
-        printf("%ld, %ld, %ld, %ld\n", k, p1[k], k, p2[k]);
+        printf("%ld, %lld, %ld, %lld\n", k, p1[k], k, p2[k]);
     }
     
 } /* end of main() */
