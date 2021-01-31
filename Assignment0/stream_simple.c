@@ -11,8 +11,8 @@
 #define MAXSIZE 1000000   // run loop 1M times
 
 
-#define FLOPs_per_Loop 1.0            //Modify ALL lines marked "Modify"
-#define Unique_Reads_per_Loop 8.0     //Modify ALL lines marked "Modify"
+#define FLOPs_per_Loop 32.0            //Modify ALL lines marked "Modify"
+#define Unique_Reads_per_Loop 1.0     //Modify ALL lines marked "Modify"
 #define Arithmetic_Intensity FLOPs_per_Loop/Unique_Reads_per_Loop   // recommended range =  [1/8 , 2]
 
 extern double mysecond();                // get current time in seconds
@@ -32,7 +32,7 @@ int main()
     for (i=0; i< ITERS; i++){
         times[i] = mysecond();
         for (j=0; j<MAXSIZE; j++){
-            b[j] = a[j] + (float)(integer[0][j] + integer[1][j] + integer[2][j] + integer[3][j] + integer[4][j] + integer[5][j] + integer[6][j]); //Modify ALL lines marked "Modify"
+            b[j] = a[j] * a[j] * a[j] * a[j] * a[j] * a[j] * a[j] * a[j] * a[j]; //Modify ALL lines marked "Modify"
         }
         times[i] = mysecond() - times[i];
     }
