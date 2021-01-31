@@ -11,8 +11,8 @@
 #define MAXSIZE 1000000   // run loop 1M times
 
 
-#define FLOPs_per_Loop 32.0            //Modify ALL lines marked "Modify"
-#define Unique_Reads_per_Loop 1.0     //Modify ALL lines marked "Modify"
+#define FLOPs_per_Loop 1.0            //Modify ALL lines marked "Modify"
+#define Unique_Reads_per_Loop 2.0     //Modify ALL lines marked "Modify"
 #define Arithmetic_Intensity FLOPs_per_Loop/Unique_Reads_per_Loop   // recommended range =  [1/8 , 2]
 
 extern double mysecond();                // get current time in seconds
