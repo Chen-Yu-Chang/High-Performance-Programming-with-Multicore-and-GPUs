@@ -20,7 +20,7 @@
 
 #define BASE  0
 #define ITERS 30
-#define DELTA 100
+#define DELTA 1000
 
 #define OPTIONS 2
 #define IDENT 0.0
