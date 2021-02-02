@@ -1,0 +1,70 @@
+This machine supports 8 threads.
+
+We will test up to 16 simultaneous copies of a STREAM memory-copy
+benchmark, with buffer sizes up to 67108864 bytes.
+
+The bandwidth is a function of two independent variables: the number of
+simultaneous tasks, and the amount of data that each task is repeatedly
+copying. For each combination of these, two measurements of bandwidth
+are printed out: total bandwidth (achieved by all tasks combined), and
+bandwidth per task. Units are:
+
+  tasks: unitless integer
+  memory block size: bytes
+  total bandwidth: bytes/second
+  bandwidth per task: bytes/second (or "bytes per second per task")
+
+This will take some time, and the processor load will steadily increase.
+If the computer's fans are making noise, that's probably why.
+
+tasks,  memsize, bandwidth,   BW/task
+  1,     1024,  3.43e+10,  3.43e+10
+  1,     4096,  3.52e+10,  3.52e+10
+  1,    16384, 3.248e+10, 3.248e+10
+  1,    65536, 2.906e+10, 2.906e+10
+  1,   262144, 3.619e+10, 3.619e+10
+  1,  1048576, 3.652e+10, 3.652e+10
+  1,  4194304, 3.564e+10, 3.564e+10
+  1, 16777216, 3.192e+10, 3.192e+10
+  1, 67108864, 3.112e+10, 3.112e+10
+
+  2,     1024, 6.758e+10, 3.379e+10
+  2,     4096, 6.873e+10, 3.437e+10
+  2,    16384, 6.932e+10, 3.466e+10
+  2,    65536, 6.605e+10, 3.303e+10
+  2,   262144,  7.14e+10,  3.57e+10
+  2,  1048576, 7.132e+10, 3.566e+10
+  2,  4194304, 6.963e+10, 3.481e+10
+  2, 16777216,  4.71e+10, 2.355e+10
+  2, 67108864, 4.103e+10, 2.051e+10
+
+  4,     1024,  1.32e+11,   3.3e+10
+  4,     4096, 1.345e+11, 3.363e+10
+  4,    16384, 1.344e+11, 3.361e+10
+  4,    65536, 1.277e+11, 3.192e+10
+  4,   262144, 1.396e+11, 3.491e+10
+  4,  1048576, 1.396e+11, 3.491e+10
+  4,  4194304, 7.571e+10, 1.893e+10
+  4, 16777216, 3.987e+10, 9.968e+09
+  4, 67108864, 3.835e+10, 9.587e+09
+
+  8,     1024, 2.534e+11, 3.168e+10
+  8,     4096, 2.544e+11, 3.181e+10
+  8,    16384, 2.207e+11, 2.759e+10
+  8,    65536, 2.133e+11, 2.666e+10
+  8,   262144, 2.265e+11, 2.831e+10
+  8,  1048576, 2.214e+11, 2.768e+10
+  8,  4194304, 6.598e+10, 8.247e+09
+  8, 16777216, 4.613e+10, 5.766e+09
+  8, 67108864, 3.583e+10, 4.479e+09
+
+ 16,     1024, 4.458e+11, 2.786e+10
+ 16,     4096, 4.478e+11, 2.799e+10
+ 16,    16384, 4.457e+11, 2.786e+10
+ 16,    65536, 4.234e+11, 2.646e+10
+ 16,   262144, 4.538e+11, 2.836e+10
+ 16,  1048576, 4.384e+11,  2.74e+10
+ 16,  4194304, 8.259e+10, 5.162e+09
+ 16, 16777216, 7.068e+10, 4.417e+09
+ 16, 67108864, 7.172e+10, 4.483e+09
+
