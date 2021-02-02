@@ -1,0 +1,88 @@
+Dense MMM tests 
+
+Doing MMM three different ways, for 20 different matrix sizes from 50 to 1050
+This may take a while!
+
+ OPT 0, iter 0, size 50
+ OPT 0, iter 1, size 100
+ OPT 0, iter 2, size 150
+ OPT 0, iter 3, size 200
+ OPT 0, iter 4, size 250
+ OPT 0, iter 5, size 300
+ OPT 0, iter 6, size 350
+ OPT 0, iter 7, size 400
+ OPT 0, iter 8, size 450
+ OPT 0, iter 9, size 500
+ OPT 0, iter 10, size 550
+ OPT 0, iter 11, size 600
+ OPT 0, iter 12, size 650
+ OPT 0, iter 13, size 700
+ OPT 0, iter 14, size 750
+ OPT 0, iter 15, size 800
+ OPT 0, iter 16, size 850
+ OPT 0, iter 17, size 900
+ OPT 0, iter 18, size 950
+ OPT 0, iter 19, size 1000
+ OPT 1, iter 0, size 50
+ OPT 1, iter 1, size 100
+ OPT 1, iter 2, size 150
+ OPT 1, iter 3, size 200
+ OPT 1, iter 4, size 250
+ OPT 1, iter 5, size 300
+ OPT 1, iter 6, size 350
+ OPT 1, iter 7, size 400
+ OPT 1, iter 8, size 450
+ OPT 1, iter 9, size 500
+ OPT 1, iter 10, size 550
+ OPT 1, iter 11, size 600
+ OPT 1, iter 12, size 650
+ OPT 1, iter 13, size 700
+ OPT 1, iter 14, size 750
+ OPT 1, iter 15, size 800
+ OPT 1, iter 16, size 850
+ OPT 1, iter 17, size 900
+ OPT 1, iter 18, size 950
+ OPT 1, iter 19, size 1000
+ OPT 2, iter 0, size 50
+ OPT 2, iter 1, size 100
+ OPT 2, iter 2, size 150
+ OPT 2, iter 3, size 200
+ OPT 2, iter 4, size 250
+ OPT 2, iter 5, size 300
+ OPT 2, iter 6, size 350
+ OPT 2, iter 7, size 400
+ OPT 2, iter 8, size 450
+ OPT 2, iter 9, size 500
+ OPT 2, iter 10, size 550
+ OPT 2, iter 11, size 600
+ OPT 2, iter 12, size 650
+ OPT 2, iter 13, size 700
+ OPT 2, iter 14, size 750
+ OPT 2, iter 15, size 800
+ OPT 2, iter 16, size 850
+ OPT 2, iter 17, size 900
+ OPT 2, iter 18, size 950
+ OPT 2, iter 19, size 1000
+Done collecting measurements.
+
+length, ijk, kij, jki
+50, 147332, 92932, 115782
+100, 1427130, 751416, 959242
+150, 5180574, 2537608, 3861606
+200, 12587720, 6281454, 9825428
+250, 25249118, 12406184, 19435720
+300, 43879802, 21143336, 42716416
+350, 70418280, 33254298, 78380212
+400, 108692232, 49042182, 149391498
+450, 151260784, 69605528, 170844200
+500, 208113162, 95254136, 233472802
+550, 278168978, 125342772, 307062094
+600, 366503004, 164018046, 406861696
+650, 462251992, 206274984, 508123680
+700, 576329540, 255869222, 635233088
+750, 711419350, 314548660, 834419798
+800, 895609228, 379202094, 1671736606
+850, 1035930982, 457338632, 1127649948
+900, 1231023668, 544345128, 1346225414
+950, 1452111624, 637426112, 1625058912
+1000, 1714545650, 745146138, 1916895166

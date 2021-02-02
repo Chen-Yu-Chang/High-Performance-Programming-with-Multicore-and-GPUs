@@ -1,0 +1,88 @@
+Dense MMM tests 
+
+Doing MMM three different ways, for 20 different matrix sizes from 100 to 2100
+This may take a while!
+
+ OPT 0, iter 0, size 100
+ OPT 0, iter 1, size 200
+ OPT 0, iter 2, size 300
+ OPT 0, iter 3, size 400
+ OPT 0, iter 4, size 500
+ OPT 0, iter 5, size 600
+ OPT 0, iter 6, size 700
+ OPT 0, iter 7, size 800
+ OPT 0, iter 8, size 900
+ OPT 0, iter 9, size 1000
+ OPT 0, iter 10, size 1100
+ OPT 0, iter 11, size 1200
+ OPT 0, iter 12, size 1300
+ OPT 0, iter 13, size 1400
+ OPT 0, iter 14, size 1500
+ OPT 0, iter 15, size 1600
+ OPT 0, iter 16, size 1700
+ OPT 0, iter 17, size 1800
+ OPT 0, iter 18, size 1900
+ OPT 0, iter 19, size 2000
+ OPT 1, iter 0, size 100
+ OPT 1, iter 1, size 200
+ OPT 1, iter 2, size 300
+ OPT 1, iter 3, size 400
+ OPT 1, iter 4, size 500
+ OPT 1, iter 5, size 600
+ OPT 1, iter 6, size 700
+ OPT 1, iter 7, size 800
+ OPT 1, iter 8, size 900
+ OPT 1, iter 9, size 1000
+ OPT 1, iter 10, size 1100
+ OPT 1, iter 11, size 1200
+ OPT 1, iter 12, size 1300
+ OPT 1, iter 13, size 1400
+ OPT 1, iter 14, size 1500
+ OPT 1, iter 15, size 1600
+ OPT 1, iter 16, size 1700
+ OPT 1, iter 17, size 1800
+ OPT 1, iter 18, size 1900
+ OPT 1, iter 19, size 2000
+ OPT 2, iter 0, size 100
+ OPT 2, iter 1, size 200
+ OPT 2, iter 2, size 300
+ OPT 2, iter 3, size 400
+ OPT 2, iter 4, size 500
+ OPT 2, iter 5, size 600
+ OPT 2, iter 6, size 700
+ OPT 2, iter 7, size 800
+ OPT 2, iter 8, size 900
+ OPT 2, iter 9, size 1000
+ OPT 2, iter 10, size 1100
+ OPT 2, iter 11, size 1200
+ OPT 2, iter 12, size 1300
+ OPT 2, iter 13, size 1400
+ OPT 2, iter 14, size 1500
+ OPT 2, iter 15, size 1600
+ OPT 2, iter 16, size 1700
+ OPT 2, iter 17, size 1800
+ OPT 2, iter 18, size 1900
+ OPT 2, iter 19, size 2000
+Done collecting measurements.
+
+length, ijk, kij, jki
+100, 1367552, 755290, 913224
+200, 12706154, 6419716, 9558828
+300, 43687876, 20918612, 43068136
+400, 107699484, 48504760, 147678508
+500, 207958120, 93894174, 232799730
+600, 363336688, 161154944, 401830048
+700, 574498986, 253016364, 627229274
+800, 887094414, 374893492, 1629044362
+900, 1227296586, 536744390, 1328383490
+1000, 1697270564, 734623936, 1864204270
+1100, 2349795576, 982558380, 2753339958
+1200, 3368965064, 1374729398, 5101333732
+1300, 4674061144, 2144518324, 5520965620
+1400, 5758745936, 2862433526, 6471967488
+1500, 8279066168, 3608778554, 10623235466
+1600, 12699517406, 4490062520, 26130190480
+1700, 11315727600, 5456242698, 14911937128
+1800, 14278964156, 6569116648, 17843355796
+1900, 17061501614, 7668874270, 21739758050
+2000, 22315119856, 8935260684, 40029907486

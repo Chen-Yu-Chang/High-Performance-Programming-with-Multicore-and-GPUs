@@ -1,0 +1,88 @@
+Dense MMM tests 
+
+Doing MMM three different ways, for 20 different matrix sizes from 113 to 2373
+This may take a while!
+
+ OPT 0, iter 0, size 113
+ OPT 0, iter 1, size 226
+ OPT 0, iter 2, size 339
+ OPT 0, iter 3, size 452
+ OPT 0, iter 4, size 565
+ OPT 0, iter 5, size 678
+ OPT 0, iter 6, size 791
+ OPT 0, iter 7, size 904
+ OPT 0, iter 8, size 1017
+ OPT 0, iter 9, size 1130
+ OPT 0, iter 10, size 1243
+ OPT 0, iter 11, size 1356
+ OPT 0, iter 12, size 1469
+ OPT 0, iter 13, size 1582
+ OPT 0, iter 14, size 1695
+ OPT 0, iter 15, size 1808
+ OPT 0, iter 16, size 1921
+ OPT 0, iter 17, size 2034
+ OPT 0, iter 18, size 2147
+ OPT 0, iter 19, size 2260
+ OPT 1, iter 0, size 113
+ OPT 1, iter 1, size 226
+ OPT 1, iter 2, size 339
+ OPT 1, iter 3, size 452
+ OPT 1, iter 4, size 565
+ OPT 1, iter 5, size 678
+ OPT 1, iter 6, size 791
+ OPT 1, iter 7, size 904
+ OPT 1, iter 8, size 1017
+ OPT 1, iter 9, size 1130
+ OPT 1, iter 10, size 1243
+ OPT 1, iter 11, size 1356
+ OPT 1, iter 12, size 1469
+ OPT 1, iter 13, size 1582
+ OPT 1, iter 14, size 1695
+ OPT 1, iter 15, size 1808
+ OPT 1, iter 16, size 1921
+ OPT 1, iter 17, size 2034
+ OPT 1, iter 18, size 2147
+ OPT 1, iter 19, size 2260
+ OPT 2, iter 0, size 113
+ OPT 2, iter 1, size 226
+ OPT 2, iter 2, size 339
+ OPT 2, iter 3, size 452
+ OPT 2, iter 4, size 565
+ OPT 2, iter 5, size 678
+ OPT 2, iter 6, size 791
+ OPT 2, iter 7, size 904
+ OPT 2, iter 8, size 1017
+ OPT 2, iter 9, size 1130
+ OPT 2, iter 10, size 1243
+ OPT 2, iter 11, size 1356
+ OPT 2, iter 12, size 1469
+ OPT 2, iter 13, size 1582
+ OPT 2, iter 14, size 1695
+ OPT 2, iter 15, size 1808
+ OPT 2, iter 16, size 1921
+ OPT 2, iter 17, size 2034
+ OPT 2, iter 18, size 2147
+ OPT 2, iter 19, size 2260
+Done collecting measurements.
+
+length, ijk, kij, jki
+113, 2023950, 1085574, 1383414
+226, 18714996, 9215468, 12222502
+339, 65774472, 30029626, 69028158
+452, 156811452, 69710120, 174261210
+565, 340265754, 134309306, 555434110
+678, 524233112, 231929818, 583525510
+791, 836370344, 365171674, 914238560
+904, 1247038036, 543424214, 1376850510
+1017, 1780838724, 773494982, 1975800664
+1130, 2666518296, 1078941386, 4481945864
+1243, 4017379480, 1679136102, 5048980920
+1356, 5414702936, 2526685704, 6372143492
+1469, 9258695892, 3326193104, 13792003682
+1582, 10595599108, 4275182088, 13068978514
+1695, 17225153588, 5402468624, 22696840282
+1808, 15300683048, 6656678566, 28407240774
+1921, 24340032416, 8006872342, 32694640724
+2034, 23447310140, 9479566210, 33089189358
+2147, 35292772226, 11384093984, 45401093516
+2260, 31096868274, 13308935776, 42138783408
