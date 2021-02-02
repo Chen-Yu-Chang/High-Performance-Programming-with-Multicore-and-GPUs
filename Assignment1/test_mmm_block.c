@@ -8,14 +8,14 @@
 #include <math.h>
 
 #define GIG 1000000000
-#define CPG 2.9           // Cycles per GHz -- Adjust to your computer
+#define CPG 2.4         // Cycles per GHz -- Adjust to your computer
 
 #define ITERS 1
 #define DELTA 200
 #define BASE  DELTA
 #define BSIZE DELTA
 
-#define MLENGTH 2400
+#define MLENGTH 800
 #define BITERS 8
 #define BBASE  5
 

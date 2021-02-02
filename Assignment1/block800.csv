@@ -1,0 +1,19 @@
+
+ Hello World -- MMM 
+
+iter = 0 bsize = 5
+iter = 1 bsize = 10
+iter = 2 bsize = 20
+iter = 3 bsize = 40
+iter = 4 bsize = 80
+iter = 5 bsize = 160
+iter = 6 bsize = 320
+iter = 7 bsize = 640
+5, 852632892
+10, 716342217
+20, 607878136
+40, 745053321
+80, 776415218
+160, 934512948
+320, 1457621047
+640, 2669246296
