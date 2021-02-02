@@ -16,7 +16,7 @@
 
 
 #define BBASE  10
-#define BDELTA 50
+#define BDELTA 100
 
 #define OPTIONS 5
 
