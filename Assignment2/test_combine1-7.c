@@ -29,8 +29,8 @@ for example a 3.2 GhZ GPU, this would be 3.2 */
  for addition, IDENT should be 0.0 and OP should be +
  for multiplication, IDENT should be 1.0 and OP should be *
  */
-#define IDENT 1.0
-#define OP *
+#define IDENT 0.0
+#define OP +
 
 /* Type of data being "combined". This can be any of the types:
  int, long int, float, double, long double */
