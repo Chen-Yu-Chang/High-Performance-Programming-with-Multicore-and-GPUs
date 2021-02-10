@@ -20,7 +20,7 @@
 #define OUTER_LOOPS 2000
 
 #define GIG 1000000000
-#define CPNS 2.0    /* Cycles per nanosecond -- Adjust to your computer,
+#define CPNS 3.0    /* Cycles per nanosecond -- Adjust to your computer,
 for example a 3.2 GhZ GPU, this would be 3.2 */
 
 #define OPTIONS 7
@@ -34,7 +34,7 @@ for example a 3.2 GhZ GPU, this would be 3.2 */
 
 /* Type of data being "combined". This can be any of the types:
  int, long int, float, double, long double */
-typedef double data_t;
+typedef float data_t;
 
 /* Create abstract data type for vector */
 typedef struct {
