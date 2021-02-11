@@ -133,7 +133,9 @@ int main(int argc, char *argv[])
     
     /* declare and initialize the vector structure */
     vec_ptr v0 = new_vec(alloc_size);
+    vec_ptr v1 = new_vec(alloc_size);
     init_vector(v0, alloc_size);
+    init_vector(v1, alloc_size);
     result = (data_t *) malloc(sizeof(data_t));
     
     printf("Testing %d variants of combine(), on vectors of %d sizes from %d to %d\n",
