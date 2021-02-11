@@ -9,13 +9,13 @@
 #include <math.h>
 
 #define GIG 1000000000
-#define CPNS 2.0    /* Cycles per nanosecond -- Adjust to your computer,
+#define CPNS 3.0    /* Cycles per nanosecond -- Adjust to your computer,
 for example a 3.2 GhZ GPU, this would be 3.2 */
 
 /* We want to test a range of work sizes. We will generate these
  using the quadratic formula:  A x^2 + B x + C                     */
-#define A   1  /* coefficient of x^2 */
-#define B   1  /* coefficient of x */
+#define A   3  /* coefficient of x^2 */
+#define B   2  /* coefficient of x */
 #define C   10  /* constant term */
 
 #define NUM_TESTS 10   /* Number of different sizes to test */
@@ -266,13 +266,10 @@ int init_vector_pred(vec_ptr v, long int len)
     
     if (len > 0) {
         v->len = len;
-        for (i = 0; i < len; i++) {
-            v->data[i] =  ; /* Modify this line!! */
-        }
+        for (i = 0; i < len; i++) v->data[i] = i+1 ; // Modify this line
         return 1;
-    } else {
-        return 0;
     }
+    else return 0;
 }
 
 //  double quasi_random = 0; /* global */
@@ -284,13 +281,10 @@ int init_vector_unpred(vec_ptr v, long int len)
     
     if (len > 0) {
         v->len = len;
-        for (i = 0; i < len; i++) {
-            v->data[i] =  ; /* Modify this line!! */
-        }
+        for (i = 0; i < len; i++) v->data[i] = i; // Modify this line
         return 1;
-    } else {
-        return 0;
     }
+    else return 0;
 }
 
 data_t *get_vec_start(vec_ptr v)
