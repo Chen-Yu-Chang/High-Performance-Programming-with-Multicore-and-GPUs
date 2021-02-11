@@ -330,55 +330,9 @@ data_t *get_vec_start(vec_ptr v)
 
 
 /*************************************************/
-/* Combine1:  Implementation with maximum use of data abstraction */
-void combine1(vec_ptr v, data_t *dest)
-{
-    long int i;
-    long int get_vec_length(vec_ptr v);
-    
-    *dest = IDENT;
-    for (i = 0; i < get_vec_length(v); i++) {
-        data_t val;
-        get_vec_element(v, i, &val);
-        *dest = *dest OP val;
-    }
-}
-
-/* Combine2:  Move call to vec_length out of loop
- * Example of --> Code motion */
-void combine2(vec_ptr v, data_t *dest)
-{
-    long int i;
-    long int get_vec_length(vec_ptr v);
-    long int length = get_vec_length(v);
-    
-    *dest = IDENT;
-    for (i = 0; i < length; i++) {
-        data_t val;
-        get_vec_element(v, i, &val);
-        *dest = *dest OP val;
-    }
-}
-
-/* Combine3:  Direct access to vector
- * Example of --> Reduce procedure calls */
-void combine3(vec_ptr v, data_t *dest)
-{
-    long int i;
-    long int get_vec_length(vec_ptr v);
-    data_t *get_vec_start(vec_ptr v);
-    long int length = get_vec_length(v);
-    data_t *data = get_vec_start(v);
-    
-    *dest = IDENT;
-    for (i = 0; i < length; i++) {
-        *dest = *dest OP data[i];
-    }
-}
-
-/* Combine4:  Accumulate result in local variable
+/* Combine1:  Accumulate result in local variable
  * Example of --> Eliminate unneeded memory references */
-void combine4(vec_ptr v, data_t *dest)
+void combine1(vec_ptr v, data_t *dest)
 {
     long int i;
     long int get_vec_length(vec_ptr v);
@@ -393,7 +347,78 @@ void combine4(vec_ptr v, data_t *dest)
     *dest = acc;
 }
 
-/* Combine5:  Unroll loop by 2
+/* Combine2:  Unroll loop by 2
+ * Example of --> Loop unrolling */
+void combine2(vec_ptr v, data_t *dest)
+{
+    long int i;
+    long int get_vec_length(vec_ptr v);
+    data_t *get_vec_start(vec_ptr v);
+    long int length = get_vec_length(v);
+    long int limit = length - 1;
+    data_t *data = get_vec_start(v);
+    data_t acc = IDENT;
+    
+    /* Combine two elements at a time */
+    for (i = 0; i < limit; i+=2) {
+        acc = (acc OP data[i]) OP data[i+1];
+    }
+    
+    /* Finish remaining elements */
+    for (; i < length; i++) {
+        acc = acc OP data[i];
+    }
+    *dest = acc;
+}
+
+/* Combine3:  Unroll loop by 6
+ * Example of --> Loop unrolling */
+void combine3(vec_ptr v, data_t *dest)
+{
+    long int i;
+    long int get_vec_length(vec_ptr v);
+    data_t *get_vec_start(vec_ptr v);
+    long int length = get_vec_length(v);
+    long int limit = length - 1;
+    data_t *data = get_vec_start(v);
+    data_t acc = IDENT;
+    
+    /* Combine two elements at a time */
+    for (i = 0; i < limit; i+=6) {
+        acc = (acc OP data[i]) OP data[i+1];
+    }
+    
+    /* Finish remaining elements */
+    for (; i < length; i++) {
+        acc = acc OP data[i];
+    }
+    *dest = acc;
+}
+
+/* Combine4:  Unroll loop by 8
+ * Example of --> Loop unrolling */
+void combine4(vec_ptr v, data_t *dest)
+{
+    long int i;
+    long int get_vec_length(vec_ptr v);
+    data_t *get_vec_start(vec_ptr v);
+    long int length = get_vec_length(v);
+    long int limit = length - 1;
+    data_t *data = get_vec_start(v);
+    data_t acc = IDENT;
+    
+    /* Combine two elements at a time */
+    for (i = 0; i < limit; i+=8) {
+        acc = (acc OP data[i]) OP data[i+1];
+    }
+    
+    /* Finish remaining elements */
+    for (; i < length; i++) {
+        acc = acc OP data[i];
+    }
+    *dest = acc;
+}
+/* Combine5:  Unroll loop by 10
  * Example of --> Loop unrolling */
 void combine5(vec_ptr v, data_t *dest)
 {
@@ -406,7 +431,7 @@ void combine5(vec_ptr v, data_t *dest)
     data_t acc = IDENT;
     
     /* Combine two elements at a time */
-    for (i = 0; i < limit; i+=2) {
+    for (i = 0; i < limit; i+=10) {
         acc = (acc OP data[i]) OP data[i+1];
     }
     
