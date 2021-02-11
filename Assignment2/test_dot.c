@@ -141,7 +141,10 @@ int main(int argc, char *argv[])
     for (x=0; x<NUM_TESTS && (n = A*x*x + B*x + C, n<=alloc_size); x++) {
         set_vec_length(v0, n);
         clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_start);
-        dot_prod(v0,v1,result);
+        for(k=0; k<OUTER_LOOPS; k++) {
+            dot_prod(v0,v1,result);
+            final_answer += *result;
+        }
         clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_stop);
         time_stamp[OPTION][x] = interval(time_start, time_stop);
     }
@@ -151,7 +154,10 @@ int main(int argc, char *argv[])
     for (x=0; x<NUM_TESTS && (n = A*x*x + B*x + C, n<=alloc_size); x++) {
         set_vec_length(v0, n);
         clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_start);
-        dot_prod_unroll(v0,v1,result);
+        for(k=0; k<OUTER_LOOPS; k++) {
+            dot_prod_unroll(v0,v1,result);
+            final_answer += *result;
+        }
         clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_stop);
         time_stamp[OPTION][x] = interval(time_start, time_stop);
     }
@@ -161,7 +167,10 @@ int main(int argc, char *argv[])
     for (x=0; x<NUM_TESTS && (n = A*x*x + B*x + C, n<=alloc_size); x++) {
         set_vec_length(v0, n);
         clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_start);
-        dot_prod_paral(v0,v1,result);
+        for(k=0; k<OUTER_LOOPS; k++) {
+            dot_prod_paral(v0,v1,result);
+            final_answer += *result;
+        }
         clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_stop);
         time_stamp[OPTION][x] = interval(time_start, time_stop);
     }
