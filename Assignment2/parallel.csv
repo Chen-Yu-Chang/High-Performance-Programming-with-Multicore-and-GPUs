@@ -1,0 +1,27 @@
+Vector reduction (combine) examples
+Testing 7 variants of combine(), on vectors of 10 sizes from 10 to 271
+testing option 0
+testing option 1
+testing option 2
+testing option 3
+testing option 4
+testing option 5
+testing option 6
+testing option 7
+testing option 8
+testing option 9
+testing option 10
+testing option 11
+size, combine1, combine2, combine3, combine4, combine5, combine6, combine7, combine8, combine9, combine10, combine11, combine12
+20000,  23646, 18210, 24153, 17931, 24147, 17811, 18615
+30000,  34449, 27384, 26610, 26721, 22122, 24129, 24336
+52000,  52476, 51432, 51195, 49947, 34197, 36123, 35457
+86000,  95133, 95130, 94962, 94893, 60069, 63834, 60294
+132000,  190095, 190308, 189972, 190326, 109098, 111351, 110463
+190000,  276531, 279210, 276417, 276366, 158841, 161079, 163425
+260000,  414204, 418215, 417207, 411387, 223293, 223542, 230073
+342000,  634707, 617856, 619218, 619089, 324366, 326787, 327675
+436000,  871431, 857469, 862275, 861573, 468984, 445374, 461073
+542000,  1143669, 1131045, 1130223, 1126812, 604629, 581466, 582519
+
+Sum of all results: 2.21258e+09
