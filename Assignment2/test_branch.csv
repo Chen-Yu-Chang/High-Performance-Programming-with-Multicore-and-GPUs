@@ -1,0 +1,20 @@
+Branch optimisation examples
+Testing 4 different ways, on vectors of 10 sizes from 10 to 271
+testing option 0: branch1() on predictable data
+testing option 1: branch1() on unpredictable data
+testing option 2: branch2() on predictable data
+testing option 3: branch2() on unpredictable data
+
+size, pred.branch1, unpred.branch1, pred.branch2, unpred.branch2
+20000,  30330, 29553, 23601, 23454
+30000,  42417, 42252, 35799, 35874
+52000,  70458, 70440, 53082, 52983
+86000,  151380, 151245, 117576, 117636
+132000,  223206, 224673, 160950, 161007
+190000,  298878, 298929, 217920, 217908
+260000,  388134, 387240, 284508, 284046
+342000,  497235, 494544, 363972, 364101
+436000,  612888, 612075, 456993, 454176
+542000,  749130, 746883, 556446, 559398
+
+Wakeup delay calculated 1.005707
