@@ -110,6 +110,9 @@ double wakeup_delay()
     return quasi_random;
 }
 
+void dot_prod(vec_ptr v0,vec_ptr v1,data_t *dest);
+void dot_prod_unroll(vec_ptr v0,vec_ptr v1, data_t *dest);
+void dot_prod_paral(vec_ptr v0,vec_ptr v1, data_t *dest);
 
 /*****************************************************************************/
 int main(int argc, char *argv[])
