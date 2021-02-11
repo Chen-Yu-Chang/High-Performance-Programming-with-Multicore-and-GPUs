@@ -23,7 +23,7 @@
 #define CPNS 3.0    /* Cycles per nanosecond -- Adjust to your computer,
 for example a 3.2 GhZ GPU, this would be 3.2 */
 
-#define OPTIONS 7
+#define OPTIONS 12
 
 /* Type of operation. This can be multiplication or addition.
  for addition, IDENT should be 0.0 and OP should be +
