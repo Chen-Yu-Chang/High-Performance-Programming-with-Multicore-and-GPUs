@@ -136,33 +136,34 @@ int main(int argc, char *argv[])
     printf("Testing %d variants of combine(), on vectors of %d sizes from %d to %d\n",
            OPTIONS, NUM_TESTS, C, alloc_size);
     
-    /* execute and time all 7 options from B&O  */
     OPTION = 0;
-    for (i = 0; i < ITERS; i++) {
-        set_vec_length(v0,BASE+(i+1)*DELTA);
-        set_vec_length(v1,BASE+(i+1)*DELTA);
-        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time1);
-        dot_prod(v0,v1,data_holder);
-        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time2);
-        time_stamp[OPTION][i] = diff(time1,time2);
+    printf("testing option %d\n", OPTION);
+    for (x=0; x<NUM_TESTS && (n = A*x*x + B*x + C, n<=alloc_size); x++) {
+        set_vec_length(v0, n);
+        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_start);
+        dot_prod(v0,v1,result);
+        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_stop);
+        time_stamp[OPTION][x] = interval(time_start, time_stop);
     }
     
     OPTION++;
-    for (i = 0; i < ITERS; i++) {
-        set_vec_length(v0,BASE+(i+1)*DELTA);
-        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time1);
-        dot_prod_unroll(v0,v1,data_holder);
-        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time2);
-        time_stamp[OPTION][i] = diff(time1,time2);
+    printf("testing option %d\n", OPTION);
+    for (x=0; x<NUM_TESTS && (n = A*x*x + B*x + C, n<=alloc_size); x++) {
+        set_vec_length(v0, n);
+        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_start);
+        dot_prod_unroll(v0,v1,result);
+        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_stop);
+        time_stamp[OPTION][x] = interval(time_start, time_stop);
     }
     
     OPTION++;
-    for (i = 0; i < ITERS; i++) {
-        set_vec_length(v0,BASE+(i+1)*DELTA);
-        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time1);
-        dot_prod_paral(v0,v1,data_holder);
-        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time2);
-        time_stamp[OPTION][i] = diff(time1,time2);
+    printf("testing option %d\n", OPTION);
+    for (x=0; x<NUM_TESTS && (n = A*x*x + B*x + C, n<=alloc_size); x++) {
+        set_vec_length(v0, n);
+        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_start);
+        dot_prod_paral(v0,v1,result);
+        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_stop);
+        time_stamp[OPTION][x] = interval(time_start, time_stop);
     }
     
     /* output times */
