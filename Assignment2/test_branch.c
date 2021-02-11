@@ -266,7 +266,7 @@ int init_vector_pred(vec_ptr v, long int len)
     
     if (len > 0) {
         v->len = len;
-        for (i = 0; i < len; i++) v->data[i] = i+1 ; // Modify this line
+        for (i = 0; i < len; i++) v->data[i] = rand() ; // Modify this line
         return 1;
     }
     else return 0;
@@ -281,7 +281,7 @@ int init_vector_unpred(vec_ptr v, long int len)
     
     if (len > 0) {
         v->len = len;
-        for (i = 0; i < len; i++) v->data[i] = i; // Modify this line
+        for (i = 0; i < len; i++) v->data[i] = rand(); // Modify this line
         return 1;
     }
     else return 0;
