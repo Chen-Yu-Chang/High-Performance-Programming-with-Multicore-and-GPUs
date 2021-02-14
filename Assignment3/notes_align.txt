@@ -1,0 +1,198 @@
+These notes on vector alignment are somewhat outdated. See sample
+output below (near the end of this file, three columns of numbers)
+for a comparison of old CPUs (2006 and 2011) to newer (2020).
+
+****************************************************************************
+
+SSE was the first version of vector (SIMD) instructions in Intel and
+AMD CPUs. It offered the ability to calculate 128 bits of data at a
+time (4 single-precision floats, or 2 double-precision).
+
+Alignment to memory boundaries is essential for using SSE. It can also
+be helpful for negotiating cache and page boundaries.
+
+(Aligning to virtual or physical memory boundaries? If the alignment
+size is less than page size, then virtual boundaries = physical
+boundaries).
+
+Alignmnent is not part of the C standard, so
+
+    -- there are many ways to do it
+    -- the different ways are not necessarily portable
+
+Alignment is likely to be a wrapper around another construct such as
+declaration of allocation. In these cases, the alignment mechanism is
+provided either by the compiler and the operating system, respectively.
+
+Here are three ways of doing alignment.  Working examples of two of them
+can be found in test_align.c.
+
+Sample output of test_align.c on old CPUs can be found at the end of
+these notes.
+
+----------------------------------------------------------------------------
+
+  #include <stdlib.h>
+  int posix_memalign(void **memptr, size_t alignment, size_t size);
+
+The posix_memalign() function shall allocate size bytes aligned on a
+boundary specified by alignment, and shall return a pointer to the
+allocated memory in memptr. The value of alignment shall be a multiple
+of sizeof( void *), that is also a power of two. Upon successful
+completion, the value pointed to by memptr shall be a multiple of
+alignment.
+
+EXAMPLE:
+
+      err = posix_memalign((void**) &buf, ALIGN, BUFFSIZE);
+      if (err) { HANDLE ERROR }
+
+The free() function shall deallocate memory that has previously been
+allocated by posix_memalign().
+
+----------------------------------------------------------------------------
+
+  void * _mm_malloc (int size, int align);    /* allocate aligned memory */
+
+Used with _mm_free(x1)
+
+  x1 = (float*)_mm_malloc(100 * sizeof(float),BOUNDARY_ALIGNMENT);
+  /* Do something that uses x1 */
+  _mm_free(x1);
+
+Use the _mm_malloc and _mm_free intrinsics to allocate and free aligned
+blocks of memory. These intrinsics are based on malloc and free.
+
+----------------------------------------------------------------------------
+
+The following notes were found at:
+  www.emerson.emory.edu/services/gcc/html/Variable_Attributes.html
+  docs.freebsd.org/info/gcc/gcc.info.Variable_Attributes.html
+
+The keyword __attribute__ allows you to specify special attributes of
+variables or structure fields. This keyword is followed by an
+attribute specification inside double parentheses. Four attributes are
+currently defined for variables: aligned, mode, packed, and section.
+Other attributes are defined for functions, and thus not documented
+here; see Function Attributes.
+
+aligned (alignment)
+
+This attribute specifies a minimum alignment for the variable or
+structure field, measured in bytes. For example, the declaration:
+
+        int x __attribute__ ((aligned (16))) = 0;
+
+causes the compiler to allocate the global variable x on a 16-byte
+boundary.
+
+You can also specify the alignment of structure fields. For example,
+to create a double-word aligned int pair, you could write:
+
+        struct foo { int x[2] __attribute__ ((aligned (8))); };
+
+This is an alternative to creating a union with a double member that
+forces the union to be double-word aligned.
+
+It is not possible to specify the alignment of functions; the
+alignment of functions is determined by the machine's requirements and
+cannot be changed. You cannot specify alignment for a typedef name
+because such a name is just an alias, not a distinct type.
+
+The aligned attribute can only increase the alignment; but you can
+decrease it by specifying packed.
+
+The linker of your operating system imposes a maximum alignment. If
+the linker aligns each object file on a four byte boundary, then it is
+beyond the compiler's power to cause anything to be aligned to a
+larger boundary than that. For example, if the linker happens to put
+this object file at address 136 (eight more than a multiple of 64),
+then the compiler cannot guarantee an alignment of more than 8 just by
+aligning variables in the object file.
+
+----------------------------------------------------------------------------
+
+Sample results from three different CPUs
+
+Notice that on the oldest CPU (from 2006) the time is significantly
+less when the alignment is a multiple of 8 (lines marked with rows of
+dots ". . . . ."). The ratio between slow and fast is about 1.4 to 1.
+  On the middle machine (2011) this effect still exists, but is less
+prominent (ratio of about 1.05 to 1).
+  On the newest machine, the ratio has diminished to just 1.01. This
+test was performed with nothing else running (browsers, other
+applications, ...)
+  If you try test_align.c you might find your numbers a lot more
+"noisy" and the difference between aligned and unaligned might only be
+evident if you increase the OUTER_LOOPS constant to 10000 or more.
+
+      Core 2 Duo            Core i5-2400           Core i7-10875H
+      (late 2006)           (early 2011)             (mid 2020)
+
+    alignment, time       alignment, time         alignment, time
+ . .  0, 11630000 . . . . .  0,  6162000 . . . . .   0,  4909999 . .
+      1, 15962000            1,  6475999             1,  4880000
+      2, 16007999            2,  6603999             2,  4881999
+      3, 15908000            3,  6486000             3,  4883999
+      4, 15899999            4,  6486000             4,  4881999
+      5, 15844000            5,  6490000             5,  4892000
+      6, 15974000            6,  6551999             6,  4885999
+      7, 15833999            7,  6592000             7,  4894000
+ . .  8, 11551999 . . . . .  8,  6189999 . . . . .   8,  4851999 . .
+      9, 15861999            9,  6550000             9,  4883999
+     10, 15848000           10,  6490000            10,  4889999
+     11, 15891999           11,  6490000            11,  4880000
+     12, 15893999           12,  6491999            12,  4883999
+     13, 15822000           13,  6494000            13,  4887999
+     14, 15823999           14,  6493999            14,  4883999
+     15, 15820000           15,  6510000            15,  4891999
+ . . 16, 11403999 . . . . . 16,  6103999 . . . . .  16,  4846000 . .
+     17, 15846000           17,  6695999            17,  4885999
+     18, 15825999           18,  6481999            18,  4883999
+     19, 15822000           19,  6325999            19,  4880000
+     20, 15823999           20,  6289999            20,  4883999
+     21, 15824000           21,  6308000            21,  4887999
+     22, 15819999           22,  6306000            22,  4889999
+     23, 15824000           23,  6306000            23,  4887999
+ . . 24, 11414000 . . . . . 24,  5925999 . . . . .  24,  4846000 . .
+     25, 15819999           25,  6287999            25,  4883999
+     26, 15826000           26,  6289999            26,  4882000
+     27, 15823999           27,  6402000            27,  4885999
+     28, 15822000           28,  6496000            28,  4883999
+     29, 15823999           29,  6511999            29,  4887999
+     30, 15826000           30,  6355999            30,  4887999
+     31, 15825999           31,  6325999            31,  4887999
+ . . 32, 11461999 . . . . . 32,  5910000 . . . . .  32,  4848000 . .
+     33, 15824000           33,  6279999            33,  4885999
+     34, 15827999           34,  6320000            34,  4881999
+     35, 15824000           35,  6281999            35,  4888000
+     36, 15818000           36,  6300000            36,  4885999
+     37, 15829999           37,  6415999            37,  4885999
+     38, 15822000           38,  6366000            38,  4900000
+     39, 15823999           39,  6300000            39,  4885999
+ . . 40, 11433999 . . . . . 40,  5994000 . . . . .  40,  4849999 . .
+     41, 15920000           41,  6285999            41,  4884000
+     42, 15823999           42,  6284000            42,  4883999
+     43, 15835999           43,  6287999            43,  4887999
+     44, 15830000           44,  6290000            44,  4879999
+     45, 15829999           45,  6369999            45,  4889999
+     46, 15827999           46,  6340000            46,  4888000
+     47, 15820000           47,  6302000            47,  4885999
+ . . 48, 11446000 . . . . . 48,  5917999 . . . . .  48,  4849999 . .
+     49, 15837999           49,  6398000            49,  4885999
+     50, 15899999           50,  6327999            50,  4884000
+     51, 15849999           51,  6287999            51,  4885999
+     52, 15929999           52,  6278000            52,  4881999
+     53, 15820000           53,  6300000            53,  4889999
+     54, 15823999           54,  6300000            54,  4889999
+     55, 15824000           55,  6300000            55,  4887999
+ . . 56, 11500000 . . . . . 56,  5919999 . . . . .  56,  4850000 . .
+     57, 15827999           57,  6282000            57,  4883999
+     58, 15826000           58,  6283999            58,  4885999
+     59, 15825999           59,  6406000            59,  4886000
+     60, 15823999           60,  6310000            60,  4881999
+     61, 15828000           61,  6311999            61,  4889999
+     62, 15821999           62,  6295999            62,  4887999
+     63, 15830000           63,  6330000            63,  4889999
+
+----------------------------------------------------------------------------
