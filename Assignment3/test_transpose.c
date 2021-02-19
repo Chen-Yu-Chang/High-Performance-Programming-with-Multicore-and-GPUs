@@ -7,18 +7,18 @@
 #include <time.h>
 #include <math.h>
 
-#define CPNS 2.0    /* Cycles per nanosecond -- Adjust to your computer,
+#define CPNS 2.4    /* Cycles per nanosecond -- Adjust to your computer,
 for example a 3.2 GHz GPU, this would be 3.2 */
 
 /* We want to test a range of work sizes. We will generate these
  using the quadratic formula:  A x^2 + B x + C                     */
-#define A   8  /* coefficient of x^2 */
-#define B   8  /* coefficient of x */
-#define C   8  /* constant term */
+#define A   2  /* coefficient of x^2 */
+#define B   5  /* coefficient of x */
+#define C   10  /* constant term */
 
 #define NUM_TESTS 10
 
-#define OPTIONS 2       // ij and ji -- need to add other methods
+#define OPTIONS 3       // ij and ji -- need to add other methods
 
 typedef float data_t;
 
@@ -42,6 +42,7 @@ long int get_array_rowlen(array_ptr v);
 int init_array(array_ptr v, long int len);
 void transpose(array_ptr v0, array_ptr v1);
 void transpose_rev(array_ptr v0, array_ptr v1);
+void transpose_sse_blocking(array_ptr v0, array_ptr v1);
 
 
 /* -=-=-=-=- Time measurement by clock_gettime() -=-=-=-=- */
@@ -150,8 +151,19 @@ int main(int argc, char *argv[])
         time_stamp[OPTION][x] = interval(time_start, time_stop);
     }
     
+    OPTION++;
+    printf("testing option %d\n", OPTION);
+    for (x=0; x<NUM_TESTS && (n = A*x*x + B*x + C, n<=alloc_size); x++) {
+        set_array_rowlen(v0, n);
+        set_array_rowlen(v1, n);
+        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_start);
+        transpose_sse_blocking(v0, v1);
+        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_stop);
+        time_stamp[OPTION][x] = interval(time_start, time_stop);
+    }
+    
     /* output times */
-    printf("size,   ij,   ji\n");
+    printf("size,   ij,   ji,    blocking \n");
     {
         int i, j;
         for (i = 0; i < x; i++) {
@@ -276,6 +288,49 @@ void transpose_rev(array_ptr v0, array_ptr v1)
     for (j = 0; j < length; j++) {
         for (i = 0; i < length; i++) {
             data1[j*length+i] = data0[i*length+j];
+        }
+    }
+}
+
+/* transpose sse blocking */
+void transpose_sse_blocking(vec_ptr v0, vec_ptr v1)
+{
+    long int i, j, m, n;
+    __m128   m1, m2, m3, m4, m5, m6, m7;
+    __m128* pSrc1;
+    __m128* pSrc2;
+    
+    data_t *data0 = get_vec_start(v0);
+    data_t *data1 = get_vec_start(v1);
+    
+    pSrc1 = (__m128*)(data0);
+    pSrc2 = (__m128*)(data1);
+    
+    
+    long int get_vec_length(vec_ptr v);
+    long int length = get_vec_length(v0)/4;
+    
+    for (i = 0; i < length; ++i){
+        for(j =0; j< length ; ++j){
+            
+            
+            m1 = (*pSrc1);
+            pSrc1++;
+            m2 = (*pSrc1);
+            pSrc1++;
+            m3 = (*pSrc1);
+            pSrc1++;
+            m4 = (*pSrc1);
+            _MM_TRANSPOSE4_PS(m1,m2,m3,m4);
+            pSrc1++;
+            (*pSrc2) = m1;
+            pSrc2++;
+            (*pSrc2) = m2;
+            pSrc2++;
+            (*pSrc2) = m3;
+            pSrc2++;
+            (*pSrc2) = m4;
+            pSrc2++;
         }
     }
 }
