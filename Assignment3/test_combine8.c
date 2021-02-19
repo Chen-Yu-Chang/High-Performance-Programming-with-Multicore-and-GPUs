@@ -74,8 +74,10 @@ void combine4(vec_ptr v, data_t *dest);
 void combine6_5(vec_ptr v, data_t *dest);
 void combine8(vec_ptr v, data_t *dest);
 /* You will add a combine8_2 */
+void combine8_2(vec_ptr v, data_t *dest);
 void combine8_4(vec_ptr v, data_t *dest);
 /* You will add a combine8_8 */
+void combine8_8(vec_ptr v, data_t *dest);
 
 
 /* -=-=-=-=- Time measurement by clock_gettime() -=-=-=-=- */
@@ -208,7 +210,7 @@ int main(int argc, char *argv[])
         set_vec_length(v0, n);
         clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_start);
         for (k=0; k<OUTER_LOOPS; k++) {
-            combine8_4(v0, data_holder);
+            combine8_2(v0, data_holder);
         }
         clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_stop);
         time_stamp[OPTION][x] = interval(time_start, time_stop);
@@ -232,7 +234,7 @@ int main(int argc, char *argv[])
         set_vec_length(v0, n);
         clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_start);
         for (k=0; k<OUTER_LOOPS; k++) {
-            combine8_4(v0, data_holder);
+            combine8_8(v0, data_holder);
         }
         clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_stop);
         time_stamp[OPTION][x] = interval(time_start, time_stop);
