@@ -293,22 +293,22 @@ void transpose_rev(array_ptr v0, array_ptr v1)
 }
 
 /* transpose sse blocking */
-void transpose_sse_blocking(vec_ptr v0, vec_ptr v1)
+void transpose_sse_blocking(array_ptr v0, array_ptr v1)
 {
     long int i, j, m, n;
     __m128   m1, m2, m3, m4, m5, m6, m7;
     __m128* pSrc1;
     __m128* pSrc2;
     
-    data_t *data0 = get_vec_start(v0);
-    data_t *data1 = get_vec_start(v1);
+    data_t *data0 = get_array_start(v0);
+    data_t *data1 = get_array_start(v1);
     
     pSrc1 = (__m128*)(data0);
     pSrc2 = (__m128*)(data1);
     
     
-    long int get_vec_length(vec_ptr v);
-    long int length = get_vec_length(v0)/4;
+    long int get_array_length(array_ptr v);
+    long int length = get_array_length(v0)/4;
     
     for (i = 0; i < length; ++i){
         for(j =0; j< length ; ++j){
