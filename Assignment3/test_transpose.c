@@ -17,7 +17,7 @@ for example a 3.2 GHz GPU, this would be 3.2 */
  using the q8   adratic formula:  A x^2 + B x + C                     */
 #define A   8  /* coefficient of x^2 */
 #define B   8  /* coefficient of x */
-#define C   10  /* constant term */
+#define C   8  /* constant term */
 
 #define NUM_TESTS 10
 
