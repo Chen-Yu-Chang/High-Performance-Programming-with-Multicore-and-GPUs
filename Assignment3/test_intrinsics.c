@@ -28,7 +28,7 @@ for example a 3.2 GHz GPU, this would be 3.2 */
 
 #define OUTER_LOOPS 1000
 
-#define OPTIONS 5
+#define OPTIONS 6
 
 typedef float data_t;
 
@@ -42,6 +42,8 @@ void SSE_distance(data_t* pA1, data_t* pA2, data_t* pR, long int nSize);
 void AVX_distance(data_t* pA1, data_t* pA2, data_t* pR, long int nSize);
 void Element_Add(data_t* pA1, data_t* pA2, data_t* pR, long int nSize);
 void Element_Multi(data_t* pA1, data_t* pA2, data_t* pR, long int nSize);
+void dot_product(data_t* pA1, data_t* pA2, data_t* pR, long int nSize);
+
 
 /* -=-=-=-=- Time measurement by clock_gettime() -=-=-=-=- */
 /*
@@ -191,8 +193,19 @@ int main(int argc, char *argv[])
         time_stamp[OPTION][x] = interval(time_start, time_stop);
     }
     
+    OPTION++;
+    printf("testing option %d\n", OPTION);
+    for (x=0; x<NUM_TESTS && (n = A*x*x + B*x + C, n<=alloc_size); x++) {
+        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_start);
+        for (k=0; k<OUTER_LOOPS; k++) {
+            dot_product(pArray1, pArray2, pResult, n);
+        }
+        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_stop);
+        time_stamp[OPTION][x] = interval(time_start, time_stop);
+    }
+    
     /* output times */
-    printf("size, Scalar, vecSSE, vecAVX, Element_Add, Element_Multi \n");
+    printf("size, Scalar, vecSSE, vecAVX, Element_Add, Element_Multi, dot_product \n");
     {
         int i, j;
         for (i = 0; i < x; i++) {
@@ -364,6 +377,34 @@ void Element_Multi(data_t* pArray1,       // [in] 1st source array
         *pDest = (*pSource1) * (*pSource2);
         pSource1++;
         pSource2++;
+        pDest++;
+    }
+}
+
+//Dot Product through Intrinsics
+void dot_product(data_t* pArray1,       // [in] 1st source array
+                data_t* pArray2,       // [in] 2nd source array
+                data_t* pResult,       // [out] result array
+                long int nSize)            // [in] size of all arrays
+{
+    int  i, nLoop = nSize/4;
+    
+    __m128   m1, m2, m3, m4;
+    __m128   m0_5 = _mm_set_ps1(0.5f);
+    const int M = 0xf;
+    
+    __m128*  pSrc1 = (__m128*) pArray1;
+    __m128*  pSrc2 = (__m128*) pArray2;
+    __m128*  pDest = (__m128*) pResult;
+    
+    for (i = 0; i < nLoop; i++){
+        m1 = (*pSrc1);
+        m2 = (*pSrc2);
+        m3 = _mm_dp_ps(m1,m2, M);
+        *pDest = m3;
+        
+        pSrc1++;
+        pSrc2++;
         pDest++;
     }
 }
