@@ -24,13 +24,13 @@
 #include <smmintrin.h>
 #include <immintrin.h>
 
-#define CPNS 2.0    /* Cycles per nanosecond -- Adjust to your computer,
+#define CPNS 2.4    /* Cycles per nanosecond -- Adjust to your computer,
 for example a 3.2 GHz GPU, this would be 3.2 */
 
 /* We want to test a range of work sizes. We will generate these
  using the quadratic formula:  A x^2 + B x + C                     */
-#define A   1  /* coefficient of x^2 */
-#define B   1  /* coefficient of x */
+#define A   2  /* coefficient of x^2 */
+#define B   5  /* coefficient of x */
 #define C   10  /* constant term */
 
 #define NUM_TESTS 10
