@@ -6,14 +6,17 @@
 #include <unistd.h>
 #include <time.h>
 #include <math.h>
+#include <xmmintrin.h>
+#include <smmintrin.h>
+#include <immintrin.h>
 
 #define CPNS 2.4    /* Cycles per nanosecond -- Adjust to your computer,
 for example a 3.2 GHz GPU, this would be 3.2 */
 
 /* We want to test a range of work sizes. We will generate these
- using the quadratic formula:  A x^2 + B x + C                     */
-#define A   2  /* coefficient of x^2 */
-#define B   5  /* coefficient of x */
+ using the q8   adratic formula:  A x^2 + B x + C                     */
+#define A   8  /* coefficient of x^2 */
+#define B   8  /* coefficient of x */
 #define C   10  /* constant term */
 
 #define NUM_TESTS 10
@@ -307,8 +310,8 @@ void transpose_sse_blocking(array_ptr v0, array_ptr v1)
     pSrc2 = (__m128*)(data1);
     
     
-    long int get_array_length(array_ptr v);
-    long int length = get_array_length(v0)/4;
+    long int get_array_rowlen(array_ptr v);
+    long int length = get_array_rowlen(v0)/4;
     
     for (i = 0; i < length; ++i){
         for(j =0; j< length ; ++j){
