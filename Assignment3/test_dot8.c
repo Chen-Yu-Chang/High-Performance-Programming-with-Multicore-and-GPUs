@@ -39,7 +39,7 @@ for example a 3.2 GHz GPU, this would be 3.2 */
 
 #define OUTER_LOOPS 1000
 
-#define OPTIONS 6       // MAKE 8 AFTER ADDING dot8_4, dot8_8
+#define OPTIONS 8       // MAKE 8 AFTER ADDING dot8_4, dot8_8
 #define IDENT 1.0
 
 typedef float data_t;
