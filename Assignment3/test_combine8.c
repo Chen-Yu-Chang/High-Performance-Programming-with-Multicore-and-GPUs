@@ -41,10 +41,10 @@ for example a 3.2 GHz GPU, this would be 3.2 */
 #define OPTIONS 4
 
 /* Modify to select add (IDENT=0.0, OP=+) or multiply (IDENT=1.0, OP=*) */
-#define IDENT 1.0
-#define OP *
+#define IDENT 0.0
+#define OP +
 
-typedef double data_t;
+typedef float data_t;
 
 /* Create abstract data type for vector */
 typedef struct {
