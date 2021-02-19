@@ -14,13 +14,13 @@
 #define FALSE 0
 #define TRUE 1
 
-#define CPNS 2.0    /* Cycles per nanosecond -- Adjust to your computer,
+#define CPNS 2.4    /* Cycles per nanosecond -- Adjust to your computer,
 for example a 3.2 GHz GPU, this would be 3.2 */
 
 /* We want to test a range of work sizes. We will generate these
  using the quadratic formula:  A x^2 + B x + C                     */
-#define A   1  /* coefficient of x^2 */
-#define B   1  /* coefficient of x */
+#define A   2  /* coefficient of x^2 */
+#define B   5  /* coefficient of x */
 #define C   10  /* constant term */
 
 #define NUM_TESTS 10
@@ -40,8 +40,7 @@ void ZeroArray(data_t* pA, long int nSize);
 void scalar_distance(data_t* pA1, data_t* pA2, data_t* pR, long int nSize);
 void SSE_distance(data_t* pA1, data_t* pA2, data_t* pR, long int nSize);
 void AVX_distance(data_t* pA1, data_t* pA2, data_t* pR, long int nSize);
-void Element_Add(data_t* pA1, data_t* pA2, data_t* pR, long int nSize);
-void Element_Multi(data_t* pA1, data_t* pA2, data_t* pR, long int nSize);
+
 
 /* -=-=-=-=- Time measurement by clock_gettime() -=-=-=-=- */
 /*
@@ -169,30 +168,8 @@ int main(int argc, char *argv[])
         time_stamp[OPTION][x] = interval(time_start, time_stop);
     }
     
-    OPTION++;
-    printf("testing option %d\n", OPTION);
-    for (x=0; x<NUM_TESTS && (n = A*x*x + B*x + C, n<=alloc_size); x++) {
-        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_start);
-        for (k=0; k<OUTER_LOOPS; k++) {
-            Element_Add(pArray1, pArray2, pResult, n);
-        }
-        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_stop);
-        time_stamp[OPTION][x] = interval(time_start, time_stop);
-    }
-    
-    OPTION++;
-    printf("testing option %d\n", OPTION);
-    for (x=0; x<NUM_TESTS && (n = A*x*x + B*x + C, n<=alloc_size); x++) {
-        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_start);
-        for (k=0; k<OUTER_LOOPS; k++) {
-            Element_Multi(pArray1, pArray2, pResult, n);
-        }
-        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time_stop);
-        time_stamp[OPTION][x] = interval(time_start, time_stop);
-    }
-    
     /* output times */
-    printf("size, Scalar, vecSSE, vecAVX, Element_Add, Element_Multi \n");
+    printf("size, Scalar, vecSSE, vecAVX\n");
     {
         int i, j;
         for (i = 0; i < x; i++) {
@@ -322,48 +299,6 @@ void AVX_distance(data_t* pArray1,       // [in] 1st source array
         
         pSrc1++;
         pSrc2++;
-        pDest++;
-    }
-}
-
-//Element-wise Add
-void Element_Add(data_t* pArray1,       // [in] 1st source array
-                data_t* pArray2,       // [in] 2nd source array
-                data_t* pResult,       // [out] result array
-                long int nSize)            // [in] size of all arrays
-{
-    int i;
-    
-    data_t* pSource1 = pArray1;
-    data_t* pSource2 = pArray2;
-    data_t* pDest = pResult;
-    float sqrtf(float x);
-    
-    for (i = 0; i < nSize; i++){
-        *pDest = (*pSource1) + (*pSource2);
-        pSource1++;
-        pSource2++;
-        pDest++;
-    }
-}
-
-//Element-wise Multiply
-void Element_Multi(data_t* pArray1,       // [in] 1st source array
-                data_t* pArray2,       // [in] 2nd source array
-                data_t* pResult,       // [out] result array
-                long int nSize)            // [in] size of all arrays
-{
-    int i;
-    
-    data_t* pSource1 = pArray1;
-    data_t* pSource2 = pArray2;
-    data_t* pDest = pResult;
-    float sqrtf(float x);
-    
-    for (i = 0; i < nSize; i++){
-        *pDest = (*pSource1) * (*pSource2);
-        pSource1++;
-        pSource2++;
         pDest++;
     }
 }
