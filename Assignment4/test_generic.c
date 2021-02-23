@@ -40,10 +40,11 @@ int main()
     printf("the_data now points to the character %c\n", *(char*) the_data);
     
     /* MODIFY: use "the_data" to print out the contents of ArrayA */
-    
-    for (int k=0; k<i/2; i++){
+   
+    int k; 
+    for (k=0; k<i/2; k++){
         the_data=&ArrayA[k];
-        printf("Data: %.1f \n", *(float*) the_data)
+        printf("Data: %.1f \n", *(float*) the_data);
     }
     
     the_data = ArrayA;

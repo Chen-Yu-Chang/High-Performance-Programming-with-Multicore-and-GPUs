@@ -13,11 +13,11 @@
 /************************************************************************/
 void *PrintHello(void *threadid)
 {
-    long tid;
+    signed char tid;
     
-    tid = (long) threadid;
+    tid = (signed char) threadid;
     
-    printf("PrintHello() in thread # %ld ! \n", tid);
+    printf("PrintHello() in thread # %s ! \n", tid);
     
     pthread_exit(NULL);
 }
@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     pthread_t threads[NUM_THREADS];
     int rc;
     long t;
-    
+    signed char a; 
     printf("Hello test_param1.c\n");
     
     for (t = 0; t < NUM_THREADS; t++) {

@@ -15,6 +15,7 @@
 /*************************************************************************/
 void *work(void *i)
 {
+    sleep(3);
     printf(" Hello World!  It's me, thread #%lx --\n", (long)pthread_self());
     pthread_exit(NULL);
 }

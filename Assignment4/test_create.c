@@ -15,6 +15,7 @@
 /***************************************************************/
 void *work(void *i)
 {
+    
     printf("Hello World! from child thread %lx\n", (long)pthread_self());
     
     pthread_exit(NULL);
@@ -24,7 +25,7 @@ void *work(void *i)
 int main(int argc, char *argv[])
 {
     int arg,i,j,k,m;                  /* Local variables. */
-    pthread_t id[NUM_THREADS];
+    pthread_t *id = (long unsigned int*) malloc(NUM_THREADS*sizeof(long unsigned int));
     
     printf("Hello test_create.c\n");
     
@@ -37,6 +38,6 @@ int main(int argc, char *argv[])
     
     printf("main() after creating the thread.  My id is %lx\n",
            (long) pthread_self());
-    
+    sleep(3);
     return(0);
 } /* end main */
