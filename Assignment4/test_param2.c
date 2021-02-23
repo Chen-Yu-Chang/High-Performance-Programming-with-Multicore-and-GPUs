@@ -26,7 +26,7 @@ void *work(void *i)
     }
     
     printf("Hello World from %lu with value %d\n", pthread_self(), g[a]);
-    g[a] = g[a] * 10;
+    g[a] = g[a] * 5;
     a = a + 1;
     //printf("in work(): f=%2d, k=%ld, *g=%d\n", f, k, *g);
     
