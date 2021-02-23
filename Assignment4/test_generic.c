@@ -41,5 +41,17 @@ int main()
     
     /* MODIFY: use "the_data" to print out the contents of ArrayA */
     
+    for (int k=0; k<i/2; i++){
+        the_data=&ArrayA[k];
+        printf("Data: %.1f \n", *(float*) the_data)
+    }
+    
+    the_data = ArrayA;
+    printf("Data: %.1f \n", *(float*) the_data);
+    the_data = ArrayA+1;
+    printf("Data: %.1f \n", *(float*) the_data);
+    the_data = ArrayA+2;
+    printf("Data: %.1f \n", *(float*) the_data);
+    
     return 0;
 }
