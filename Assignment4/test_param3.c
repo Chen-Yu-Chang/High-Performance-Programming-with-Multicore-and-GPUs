@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 
-#define NUM_THREADS 5
+#define NUM_THREADS 6
 
 struct thread_data{
     int thread_id;
@@ -45,14 +45,17 @@ int main(int argc, char *argv[])
         "Second Message",
         "Third Message",
         "Fourth Message",
-        "Fifth Message"};
+        "Fifth Message",
+        "Sixth Message"
+    };
     
     printf("Hello test_param3.c\n");
     
     for (t = 0; t < NUM_THREADS; t++) {
         thread_data_array[t].thread_id = t;
-        thread_data_array[t].sum = t+27;
+        thread_data_array[t].sum = t+28;
         thread_data_array[t].message = Messages[t];
+        thread_data_array[5].sum = 1000;
         printf("In main:  creating thread %ld\n", t);
         rc = pthread_create(&threads[t], NULL, PrintHello,
                             (void*) &thread_data_array[t]);
