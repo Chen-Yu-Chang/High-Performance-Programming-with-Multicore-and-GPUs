@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <time.h>
 
 #ifdef __APPLE__
 /* Shim for Mac OS X (use at your own risk ;-) */
@@ -43,7 +44,7 @@
 
 #define USE_BARRIERS 0
 
-#define ITERS 1000
+#define ITERS 1000000
 #define DELTA_T 0.01
 #define DELTA_X 1.0
 
@@ -125,6 +126,7 @@ void *worker(void *threadarg)
 int main(int argc, char *argv[])
 {
     int i;
+    clock_t begin = clock();
     pthread_t threads[NUM_THREADS];
     struct thread_data thread_data_array[NUM_THREADS];
     int rc;
@@ -144,7 +146,31 @@ int main(int argc, char *argv[])
     }
     
     /* -------------------- Add Code Here -------------------- */
+    if (pthread_barrier_init(&barrier1, NULL, NUM_THREADS)) {
+        printf("Could not create a barrier\n");
+        return -1;
+    }
     
+    
+    for (t = 0; t < NUM_THREADS; t++){
+        thread_data_array[t].thread_id = t;
+        thread_data_array[t].array_index = t+1;
+        rc = pthread_create(&threads[t], NULL, worker,
+                            (void*) &thread_data_array[t]);
+        if (rc) {
+            printf("ERROR; return code from pthread_create() is %d\n", rc);
+            exit(-1);
+        }
+    }
+    
+    printf("\nsystem state after %d iterations:\n", ITERS);
+    
+    for (t = 0; t < NUM_THREADS ; t++) {
+        if (pthread_join(threads[t],NULL)){
+            printf("\n ERROR on join\n");
+            exit(19);
+        }
+    }
     /* Display the result */
     for (i=0; i<NUM_THREADS+2; i++) {
         printf(" %5.2f", heatvals[i]);
