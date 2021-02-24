@@ -6,7 +6,7 @@
 #include <pthread.h>
 #include <unistd.h>
 
-#define NUM_THREADS 7
+#define NUM_THREADS 8
 
 struct thread_data{
     int thread_id;
@@ -66,6 +66,13 @@ void *PrintHello(void *threadarg)
             pthread_mutex_lock(&mutexA[6]);
             pthread_mutex_unlock(&mutexA[6]);
             break;
+	case 8:
+	    printf("thread #%ld waiting for 6 and 7 ...\n", taskid);
+	    pthread_mutex_lock(&mutexA[6]);
+	    pthread_mutex_unlock(&mutexA[6]);
+	    pthread_mutex_lock(&mutexA[7]);
+	    pthread_mutex_unlock(&mutexA[7]);
+	    break;
         default:
             printf("It's me, thread #%ld! I'm waiting ...\n", taskid);
             break;
@@ -95,7 +102,8 @@ int main(int argc, char *argv[])
         "Fourth Message",
         "Fifth Message",
         "Sixth Message",
-        "Seventh Message"};
+        "Seventh Message"
+	"Eighth Message"};
     char dummy[1];
     
     for (i = 0; i <= NUM_THREADS; i++) {
@@ -129,11 +137,11 @@ int main(int argc, char *argv[])
     
     printf("Main: calling sleep(1)...\n");
     sleep(1);
-    printf("Main: created threads 2-7, type a letter (not space) and <enter>\n");
+    printf("Main: created threads 2-8, type a letter (not space) and <enter>\n");
     
     scanf("%s", dummy);
     
-    printf("Main: waiting for thread 7 to finish, UNLOCK LOCK 1\n");
+    printf("Main: waiting for thread 8 to finish, UNLOCK LOCK 1\n");
     
     if (pthread_mutex_unlock(&mutexA[1])) {
         printf("ERROR on unlock\n");
@@ -141,7 +149,7 @@ int main(int argc, char *argv[])
     
     printf("Main: Done unlocking 1 \n");
     
-    pthread_mutex_lock(&mutexA[7]);
+    pthread_mutex_lock(&mutexA[8]);
     
     for (t = 2; t <= NUM_THREADS; t++) {
         if (pthread_join(threads[t], NULL)) {
