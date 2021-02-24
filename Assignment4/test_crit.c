@@ -17,7 +17,7 @@ struct thread_data{
 };
 
 //double qr_total = 0;
-
+pthread_mutex_t mutexA;
 /********************/
 void *PrintHello(void *threadarg)
 {
