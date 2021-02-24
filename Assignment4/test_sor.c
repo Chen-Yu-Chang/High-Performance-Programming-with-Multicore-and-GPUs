@@ -176,7 +176,9 @@ int main(int argc, char *argv[])
         printf(" %5.2f", heatvals[i]);
     }
     printf("\n");
-    
+    clock_t end = clock();
+    double time = (double)(end-begin)/CLOCKS_PER_SEC;
+    printf("Take %f seconds", time); 
     pthread_exit(NULL);
     
 } /* end main */
