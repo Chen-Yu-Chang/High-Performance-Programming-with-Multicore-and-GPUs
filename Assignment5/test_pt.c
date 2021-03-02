@@ -10,11 +10,11 @@
 #include <time.h>
 #include <math.h>
 
-#define CPNS 2.0    /* Cycles per nanosecond -- Adjust to your computer,
+#define CPNS 2.4    /* Cycles per nanosecond -- Adjust to your computer,
 for example a 3.2 GhZ GPU, this would be 3.2 */
 
-#define A   1   /* coefficient of x^2 */
-#define B   1   /* coefficient of x */
+#define A   2   /* coefficient of x^2 */
+#define B   3   /* coefficient of x */
 #define C   10  /* constant term */
 
 #define NUM_TESTS 10
