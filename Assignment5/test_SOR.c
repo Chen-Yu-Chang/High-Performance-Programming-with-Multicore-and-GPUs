@@ -16,7 +16,7 @@
 # include "apple_pthread_barrier.h"
 #endif /* __APPLE__ */
 
-#define CPNS 2.0    /* Cycles per nanosecond -- Adjust to your computer,
+#define CPNS 2.8    /* Cycles per nanosecond -- Adjust to your computer,
 for example a 3.2 GhZ GPU, this would be 3.2 */
 
 #define GHOST 2   /* 2 extra rows/columns for "ghost zone". */
@@ -38,7 +38,7 @@ for example a 3.2 GhZ GPU, this would be 3.2 */
 #define MAXVAL  10.0
 
 #define TOL 0.00001
-#define OMEGA 1.60       // TO BE DETERMINED
+#define OMEGA 1.90       // TO BE DETERMINED
 
 typedef double data_t;
 
