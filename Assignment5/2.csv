@@ -1,0 +1,54 @@
+SOR serial variations 
+OMEGA = 1.90
+OPTION=0 (normal serial SOR)
+  iter 0 rowlen = 34
+    SOR() done after 125 iters
+  iter 1 rowlen = 58
+    SOR() done after 135 iters
+  iter 2 rowlen = 98
+    SOR() done after 176 iters
+  iter 3 rowlen = 154
+    SOR() done after 490 iters
+  iter 4 rowlen = 226
+    SOR() done after 655 iters
+OPTION=1 (serial SOR_redblack)
+  iter 0 rowlen = 34
+    SOR_redblack() done after 118 iters
+  iter 1 rowlen = 58
+    SOR_redblack() done after 118 iters
+  iter 2 rowlen = 98
+    SOR_redblack() done after 320 iters
+  iter 3 rowlen = 154
+    SOR_redblack() done after 469 iters
+  iter 4 rowlen = 226
+    SOR_redblack() done after 536 iters
+OPTION=2 (serial SOR_ji)
+  iter 0 rowlen = 34
+    SOR_ji() done after 125 iters
+  iter 1 rowlen = 58
+    SOR_ji() done after 135 iters
+  iter 2 rowlen = 98
+    SOR_ji() done after 176 iters
+  iter 3 rowlen = 154
+    SOR_ji() done after 490 iters
+  iter 4 rowlen = 226
+    SOR_ji() done after 655 iters
+OPTION=3 (serial SOR_blocked)
+  iter 0 rowlen = 34
+    SOR_blocked() done after 125 iters
+  iter 1 rowlen = 58
+    SOR_blocked() done after 135 iters
+  iter 2 rowlen = 98
+    SOR_blocked() done after 176 iters
+  iter 3 rowlen = 154
+    SOR_blocked() done after 490 iters
+  iter 4 rowlen = 226
+    SOR_blocked() done after 655 iters
+All times are in cycles (if CPNS is set correctly in code)
+
+size, SOR time, SOR iters, red/black time, red/black iters, SOR_ji time, SOR_ji iters, SOR_blocked time, SOR_blocked iters
+  32,  9.151e+06,  125,  3.997e+06,  118,  5.016e+06,  125,  4.616e+06,  125
+  56,  2.764e+07,  135,  1.201e+07,  118,  1.637e+07,  135,  1.485e+07,  135
+  96,  8.436e+07,  176,  4.233e+07,  320,  5.949e+07,  176,   4.89e+07,  176
+ 152,  3.412e+08,  490,  1.449e+08,  469,  3.729e+08,  490,  2.207e+08,  490
+ 224,  8.794e+08,  655,  3.498e+08,  536,  1.089e+09,  655,  6.224e+08,  655
