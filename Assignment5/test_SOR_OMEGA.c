@@ -20,7 +20,7 @@
 #define TOL 0.00001
 
 #define START_OMEGA 0.50 /* The first OMEGA value to try */
-#define OMEGA_INC 0.005   /* OMEGA increment for each O_ITERS */
+#define OMEGA_INC 0.015   /* OMEGA increment for each O_ITERS */
 #define O_ITERS 100      /* How many OMEGA values to test */
 
 #define PER_O_TRIALS 10  /* trials per OMEGA value */
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     
     printf("OMEGA, average iterations\n");
     for (i = 0; i < O_ITERS; i++) {
-        printf("%0.4f %0.1f\n", convergence[i][0], convergence[i][1]);
+        printf("%0.4f, %0.1f\n", convergence[i][0], convergence[i][1]);
     }
     
 } /* end main */
