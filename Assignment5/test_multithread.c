@@ -8,13 +8,12 @@
 #include <math.h>
 #include "apple_pthread_barrier.h"
 
-#define GIG 1000000000
-#define CPG 2.6           // Cycles per GHz -- Adjust to your computer
+#define CPG 2.4           // Cycles per GHz -- Adjust to your computer
 
-#define BASE  0
-#define ITERS 10
-#define DELTA 100
-
+#define A   8   /* coefficient of x^2 */
+#define B   16  /* coefficient of x */
+#define C   32  /* constant term */
+#define NUM_TESTS 5
 #define OPTIONS 2        // Current setting, vary as you wish!
 #define IDENT 0
 
@@ -64,7 +63,6 @@ int main(int argc, char *argv[])
     
     long int i, j, k;
     long int time_sec, time_ns;
-    long int MAXSIZE = BASE+(ITERS)*DELTA;
     
     printf(" Hello World -- Test SOR pthreads \n");
     
@@ -95,31 +93,31 @@ int main(int argc, char *argv[])
     NUM_THREADS = 16;
     OPTION =0;
     printf("OPTION %d: pt_cb_pthr() with %d threads\n", OPTION, NUM_THREADS);
-    for (i = 0; i < ITERS; i++) {
-        init_matrix_rand(a0,BASE+(i+1)*DELTA);
-        set_matrix_length(a0,BASE+(i+1)*DELTA);
-        set_matrix_length(b0,BASE+(i+1)*DELTA);
-        set_matrix_length(c0,BASE+(i+1)*DELTA);
+    for (x=0; x<NUM_TESTS && (n = A*x*x + B*x + C, n<=alloc_size); x++) {
+        init_matrix_rand(a0,n);
+        set_matrix_length(a0,n);
+        set_matrix_length(b0,n);
+        set_matrix_length(c0,n);
         clock_gettime(CLOCK_REALTIME, &time1);
         pt_cb_pthr(a0,b0,c0);
         clock_gettime(CLOCK_REALTIME, &time2);
-        time_stamp[OPTION][i] = diff(time1,time2);
-        printf("iter %d done\n", i);
+        time_stamp[OPTION][x] = diff(time1,time2);
+        printf("iter %d done\n", x);
     }
     
     NUM_THREADS = 4;
     OPTION++;
     printf("OPTION %d: pt_cb_pthr() with %d threads\n", OPTION, NUM_THREADS);
-    for (i = 0; i < ITERS; i++) {
-        init_matrix_rand(a0,BASE+(i+1)*DELTA);
-        set_matrix_length(a0,BASE+(i+1)*DELTA);
-        set_matrix_length(b0,BASE+(i+1)*DELTA);
-        set_matrix_length(c0,BASE+(i+1)*DELTA);
+    for (x=0; x<NUM_TESTS && (n = A*x*x + B*x + C, n<=alloc_size); x++) {
+        init_matrix_rand(a0,n);
+        set_matrix_length(a0,n);
+        set_matrix_length(b0,n);
+        set_matrix_length(c0,n);
         clock_gettime(CLOCK_REALTIME, &time1);
         pt_cb_pthr(a0,b0,c0);
         clock_gettime(CLOCK_REALTIME, &time2);
-        time_stamp[OPTION][i] = diff(time1,time2);
-        printf("iter %d done\n", i);
+        time_stamp[OPTION][x] = diff(time1,time2);
+        printf("iter %d done\n", x);
     }
     
     /* enable this to try the experiment on a machine with 8+ cores, and don't
