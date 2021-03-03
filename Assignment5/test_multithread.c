@@ -1,28 +1,34 @@
 /*****************************************************************************/
-// gcc -O1 -pthread -o test_SOR_multithreaded test_SOR_multithreaded.c -lrt -lm
+// gcc -O1 -o part4_final part4_final.c -lm -lrt
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <math.h>
 #include <pthread.h>
 
 #define GIG 1000000000
-#define CPG 2.53          // Cycles per GHz -- Adjust to your computer
-
-#define BASE  2
-#define ITERS 1
-#define DELTA 1250
+#define CPG 2.9           // Cycles per GHz -- Adjust to your computer
 
 #define OPTIONS 2
-#define BLOCK_SIZE 8     // TO BE DETERMINED
+#define BASE  0
+#define ITERS 1
+#define DELTA 200        // Right now only set up to do one size
+
+#define BLOCK_SIZE 4
 
 #define MINVAL   0.0
-#define MAXVAL  10.0
+#define MAXVAL  100.0
 
 #define TOL 0.00001
-#define OMEGA 1.60       // TO BE DETERMINED
 
+#define O_ITERS 150        // # of OMEGA values to be tested
+#define PER_O_ITERS 10    // trials per OMEGA value
+double OMEGA = 1.90;     // OMEGA base - first OMEGA tested
+#define OMEGA_INC 0.01   // OMEGA increment for each O_ITERS
+int no_rows_per_thread;
+#define NUM_THREADS 4
+long int iterations = 0;
+long int iterations_block = 0;
 typedef double data_t;
 
 /* Create abstract data type for vector -- here a 2D array */
@@ -31,100 +37,120 @@ typedef struct {
     data_t *data;
 } vec_rec, *vec_ptr;
 
-/* Number of bytes in a vector (SSE sense) */
-#define VBYTES 16
-
-/* Number of elements in a vector (SSE sense) */
-#define VSIZE VBYTES/sizeof(data_t)
-
-typedef data_t vec_t __attribute__ ((vector_size(VBYTES)));
-typedef union {
-    vec_t v;
-    data_t d[VSIZE];
-} pack_t;
-
-/* used to pass parameters to worker threads */
 struct thread_data{
-    int thread_id;
-    vec_ptr v;
-    int *interactions;
+    vec_ptr vec;
+    long int arg;
 };
-
-#define NUM_THREADS 2
 
 /*****************************************************************************/
 main(int argc, char *argv[])
 {
-    int OPTION;
+    int OPTION=0;
     struct timespec diff(struct timespec start, struct timespec end);
     struct timespec time1, time2;
     struct timespec time_stamp[OPTIONS][ITERS+1];
     int convergence[OPTIONS][ITERS+1];
+    //double convergence[O_ITERS][2];
     vec_ptr new_vec(long int len);
     int set_vec_length(vec_ptr v, long int index);
     long int get_vec_length(vec_ptr v);
     int init_vector(vec_ptr v, long int len);
     int init_vector_rand(vec_ptr v, long int len);
     int print_vector(vec_ptr v);
-    int *iterations;
+    void *SOR(void *arg);
+    void* status;
     
-    void pt_SOR(vec_ptr v, int *iterations)
-    void SOR(vec_ptr v, int *iterations);
-    void SOR_ji(vec_ptr v, int *iterations);
-    void SOR_blocked(vec_ptr v, int *iterations);
-    
+    void *SOR_blocked(void* arg);
     long int i, j, k;
     long int time_sec, time_ns;
-    long int MAXSIZE = BASE+(ITERS+1)*DELTA;
+    long int MAXSIZE = (BASE+(ITERS)*DELTA);
+    no_rows_per_thread = MAXSIZE/NUM_THREADS;
     
-    printf("\n Hello World -- SOR serial variations \n");
     
-    // declare and initialize the vector structure
+    pthread_t Threads[NUM_THREADS];
+    struct thread_data data[NUM_THREADS];
+    
+    
     vec_ptr v0 = new_vec(MAXSIZE);
-    iterations = (int *) malloc(sizeof(int));
+    
+    
+    
     
     OPTION = 0;
-    for (i = 0; i < ITERS; i++) {
-        printf("\niter = %d length = %d OMEGA = %0.2f", i, BASE+(i+1)*DELTA, OMEGA);
-        set_vec_length(v0, BASE+(i+1)*DELTA);
-        init_vector_rand(v0, BASE+(i+1)*DELTA);
-        //print_vector(v0);
+    for (j = 0; j < ITERS; j++) {
+        // printf("\niter = %d length = %d OMEGA = %0.2f", i, BASE+(i+1)*DELTA, OMEGA);
+        set_vec_length(v0, MAXSIZE);
+        init_vector_rand(v0, MAXSIZE);
         clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time1);
-        SOR(v0,iterations);
+        for(i=0;i<NUM_THREADS; i++)
+        {
+            data[i].vec = v0;
+            data[i].arg = i;
+            pthread_create(&Threads[i], NULL, SOR, (void *)&data[i]);
+        }
+        for(i=0; i<NUM_THREADS; i++)
+        {
+            pthread_join(Threads[i], &status);
+        }
         clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time2);
-        time_stamp[OPTION][i] = diff(time1,time2);
-        convergence[OPTION][i] = *iterations;
+        time_stamp[OPTION][j] = diff(time1,time2);
+        convergence[OPTION][j] = iterations;
         //print_vector(v0);
-    }
-    
-    OPTION++;
-    for (i = 0; i < ITERS; i++) {
-        printf("\niter = %d length = %d", i, BASE+(i+1)*DELTA);
-        init_vector_rand(v0, BASE+(i+1)*DELTA);
-        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time1);
-        set_vec_length(v0,BASE+(i+1)*DELTA);
-        pt_SOR(v0,iterations);
-        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time2);
-        time_stamp[OPTION][i] = diff(time1,time2);
-        convergence[OPTION][i] = *iterations;
+        printf("Loop no: %ld\t", j);
     }
     
     
+    OPTION ++;
+    for (j = 0; j < ITERS; j++) {
+        // printf("\niter = %d length = %d OMEGA = %0.2f", i, BASE+(i+1)*DELTA, OMEGA);
+        set_vec_length(v0, MAXSIZE);
+        init_vector_rand(v0, MAXSIZE);
+        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time1);
+        for(i=0;i<NUM_THREADS; i++)
+        {
+            data[i].vec = v0;
+            data[i].arg = i;
+            pthread_create(&Threads[i], NULL, SOR_blocked, (void *)&data[i]);
+        }
+        for(i=0; i<NUM_THREADS; i++)
+        {
+            pthread_join(Threads[i], &status);
+        }
+        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time2);
+        time_stamp[OPTION][j] = diff(time1,time2);
+        convergence[OPTION][j] = iterations_block;
+        //print_vector(v0);
+    }
+    
+    
+    //  printf("\n%ld\n", iterations);
+    // printf("\n%ld\n", iterations_block);
     for (i = 0; i < ITERS; i++) {
-        printf("\n%d, %d, ", BASE+(i+1)*DELTA, BLOCK_SIZE);
+        printf("\n%d, ", (BASE+(i+1)*DELTA));
         for (j = 0; j < OPTIONS; j++) {
             if (j != 0) printf(", ");
             printf("%ld", (long int)((double)(CPG)*(double)
-                                     (GIG * time_stamp[j][i].tv_sec + time_stamp[j][i].tv_nsec)));
+                                     (GIG*time_stamp[j][i].tv_sec + time_stamp[j][i].tv_nsec))/NUM_THREADS);
             printf(", %d", convergence[j][i]);
         }
     }
-    
     printf("\n");
     
 }/* end main */
 /*********************************/
 
+struct timespec diff(struct timespec start, struct timespec end)
+{
+    struct timespec temp;
+    if ((end.tv_nsec-start.tv_nsec)<0) {
+        temp.tv_sec = end.tv_sec-start.tv_sec-1;
+        temp.tv_nsec = 1000000000+end.tv_nsec-start.tv_nsec;
+    } else {
+        temp.tv_sec = end.tv_sec-start.tv_sec;
+        temp.tv_nsec = end.tv_nsec-start.tv_nsec;
+    }
+    return temp;
+}
 /* Create 2D vector of specified length per dimension */
 vec_ptr new_vec(long int len)
 {
@@ -176,7 +202,7 @@ int init_vector(vec_ptr v, long int len)
     else return 0;
 }
 
-/* initialize vector with another */
+/* initialize vector with random number in a range */
 int init_vector_rand(vec_ptr v, long int len)
 {
     long int i;
@@ -191,7 +217,7 @@ int init_vector_rand(vec_ptr v, long int len)
     else return 0;
 }
 
-/* print vector */
+/* print vector for test */
 int print_vector(vec_ptr v)
 {
     long int i, j, len;
@@ -212,19 +238,6 @@ data_t *get_vec_start(vec_ptr v)
 
 /************************************/
 
-struct timespec diff(struct timespec start, struct timespec end)
-{
-    struct timespec temp;
-    if ((end.tv_nsec-start.tv_nsec)<0) {
-        temp.tv_sec = end.tv_sec-start.tv_sec-1;
-        temp.tv_nsec = 1000000000+end.tv_nsec-start.tv_nsec;
-    } else {
-        temp.tv_sec = end.tv_sec-start.tv_sec;
-        temp.tv_nsec = end.tv_nsec-start.tv_nsec;
-    }
-    return temp;
-}
-
 double fRand(double fMin, double fMax)
 {
     double f = (double)random() / RAND_MAX;
@@ -234,18 +247,27 @@ double fRand(double fMin, double fMax)
 /************************************/
 
 /* SOR */
-void SOR(vec_ptr v, int *iterations)
+void *SOR(void *arg)
 {
+    
+    //  printf("In the thread\n");
     long int i, j;
-    long int length = get_vec_length(v);
-    data_t *data = get_vec_start(v);
+    struct thread_data *data_thread = (struct thread_data*)arg;
+    vec_ptr v0 = data_thread->vec;
+    long int length = get_vec_length(v0);
+    data_t *data = get_vec_start(v0);
     double change, mean_change = 100;   // start w/ something big
     int iters = 0;
+    
+    long int offset = data_thread->arg;
+    
+    long int start = offset*no_rows_per_thread;
+    long int end = start + no_rows_per_thread;
     
     while ((mean_change/(double)(length*length)) > (double)TOL) {
         iters++;
         mean_change = 0;
-        for (i = 1; i < length-1; i++)
+        for (i = start+1; i < end-1; i++)
             for (j = 1; j < length-1; j++) {
                 change = data[i*length+j] - .25 * (data[(i-1)*length+j] +
                                                    data[(i+1)*length+j] +
@@ -258,79 +280,52 @@ void SOR(vec_ptr v, int *iterations)
                 mean_change += change;
             }
         if (abs(data[(length-2)*(length-2)]) > 10.0*(MAXVAL - MINVAL)) {
-            printf("\n PROBABLY DIVERGENCE iter = %ld", iters);
+            //     printf("\n PROBABLY DIVERGENCE iter = %ld", iters);
             break;
         }
     }
-    *iterations = iters;
-    printf("\n iters = %d", iters);
+    iterations += iters;
 }
 
-void *SOR_work(void *threadarg){
-    long int i, j, low, high;
-    struct thread_data = *my_data;
-    my_data = (struct thread_data * threadarg;
-               int taskid = my_data->thread_id;
-               vec_ptr v = my_data->v;
-               long int length = get_vec_length(v);
-               data_t *data = get_vec_start(v);
-               double change, mean_change = 100;   // start w/ something big
-               int iters = 0;
-               
-               low = (taskid*length)/NUM_THREADS;
-               high = ((taskid+1)*length)/NUM_THREADS;
-               
-               while ((mean_change/(double)(length*length)) > (double)TOL) {
-                   iters++;
-                   mean_change = 0;
-                   for (i = low; i < high; i++)
-                       for (j = 1; j < length-1; j++) {
-                           change = data[i*length+j] - .25 * (data[(i-1)*length+j] +
-                                                              data[(i+1)*length+j] +
-                                                              data[i*length+j+1] +
-                                                              data[i*length+j-1]);
-                           data[i*length+j] -= change * OMEGA;
-                           if (change < 0){
-                               change = -change;
-                           }
-                           mean_change += change;
-                       }
-                   if (abs(data[(length-2)*(length-2)]) > 10.0*(MAXVAL - MINVAL)) {
-                       printf("\n PROBABLY DIVERGENCE iter = %ld", iters);
-                       break;
-                   }
-               }
-               *iterations = iters;
-               }
-               
-               void pt_SOR(vec_ptr v, int *iterations)
-    {
-        pthread_t threads[NUM_THREADS];
-        struct thread_data thread_data_array[NUM_THREADS];
-        long t;
-        int rc;
-        int iters = 0;
-        
-        for(t = 0; t < NUM_THREADS; t++){
-            thread_data_array[t].thread_id = t;
-            thread_data_array[t].v = v;
-            thread_data_array[t].interactions = interactions;
-            rc = pthread_create(&threads[t], NULL, SOR_work, (void*) & thread_data_array[t]);
-            if(rc){
-                printf("ERROR; return code from pthread_create() is %d\n", rc);
-                exit(-1);
-            }
+
+/* SOR w/ blocking */
+void *SOR_blocked(void* arg)
+{
+    long int i, j, ii, jj;
+    struct thread_data *data_thread = (struct thread_data*)arg;
+    vec_ptr v0 = data_thread->vec;
+    long int length = get_vec_length(v0);
+    data_t *data = get_vec_start(v0);
+    double change, mean_change = 100;
+    int iters = 0;
+    int k;
+    
+    long int offset = data_thread->arg;
+    
+    long int start = offset*no_rows_per_thread;
+    long int end = start + no_rows_per_thread;
+    
+    while ((mean_change/(double)(length*length)) > (double)TOL) {
+        iters++;
+        mean_change = 0;
+        for (ii = start+1; ii < end-1; ii+=BLOCK_SIZE)
+            for (jj = 1; jj < length-1; jj+=BLOCK_SIZE)
+                for (i = ii; i < ii+BLOCK_SIZE; i++)
+                    for (j = jj; j < jj+BLOCK_SIZE; j++) {
+                        change = data[i*length+j] - .25 * (data[(i-1)*length+j] +
+                                                           data[(i+1)*length+j] +
+                                                           data[i*length+j+1] +
+                                                           data[i*length+j-1]);
+                        data[i*length+j] -= change * OMEGA;
+                        if (change < 0){
+                            change = -change;
+                        }
+                        mean_change += change;
+                    }
+        if (abs(data[(length-2)*(length-2)]) > 10.0*(MAXVAL - MINVAL)) {
+            printf("\n PROBABLY DIVERGENCE iter = %d", iters);
+            break;
         }
-        
-        
-        for(t = 0; t < NUM_THREADS; t++){
-            if(pthread_join(threads[t], NULL)){
-                printf("ERROR; code on return from join is %d\n", rc);
-                exit(-1);
-            } else{
-                iters += thread_data_array[t].iterations;
-            }
-        }
-        
-        printf("\n iters = %d", iters);
     }
+    iterations_block += iters;
+}
