@@ -1,0 +1,48 @@
+Test SOR pthreads
+OPTION 0 - pt_cb_base()
+iter 0 done
+iter 1 done
+iter 2 done
+iter 3 done
+iter 4 done
+iter 5 done
+iter 6 done
+iter 7 done
+iter 8 done
+iter 9 done
+OPTION 1: pt_cb_pthr() with 2 threads
+iter 0 done
+iter 1 done
+iter 2 done
+iter 3 done
+iter 4 done
+iter 5 done
+iter 6 done
+iter 7 done
+iter 8 done
+iter 9 done
+OPTION 2: pt_cb_pthr() with 4 threads
+iter 0 done
+iter 1 done
+iter 2 done
+iter 3 done
+iter 4 done
+iter 5 done
+iter 6 done
+iter 7 done
+iter 8 done
+iter 9 done
+
+All measurements are in cycles (if CPNS is set correctly in the code)
+row length, 1 thread, 2 threads, 4 threads
+10, 267441, 990117, 352934
+15, 171016, 367070, 219715
+24, 414400, 434551, 303919
+37, 995196, 1353180, 456804
+54, 2142280, 1378308, 1167177
+75, 4093689, 2417868, 1260960
+100, 7127097, 3871624, 2159169
+129, 11119987, 6410551, 3414931
+162, 17219205, 9493204, 5185077
+199, 24012216, 13736836, 7211772
+test_pt done
