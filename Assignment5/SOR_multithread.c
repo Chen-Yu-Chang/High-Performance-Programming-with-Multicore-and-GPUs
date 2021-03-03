@@ -132,8 +132,8 @@ int main(int argc, char *argv[])
         clock_gettime(CLOCK_REALTIME, &time_start);
         pt_cb_pthr(a0,b0,c0);
         clock_gettime(CLOCK_REALTIME, &time_stop);
-        time_stamp[OPTION][x] = diff(time_start,time_stop);
-        printf("iter %d done\n", x);
+        time_stamp[OPTION][x] = interval(time_start,time_stop);
+        printf("iter %ld done\n", x);
     }
     
     NUM_THREADS = 4;
@@ -147,8 +147,8 @@ int main(int argc, char *argv[])
         clock_gettime(CLOCK_REALTIME, &time_start);
         pt_cb_pthr(a0,b0,c0);
         clock_gettime(CLOCK_REALTIME, &time_stop);
-        time_stamp[OPTION][x] = diff(time_start,time_stop);
-        printf("iter %d done\n", x);
+        time_stamp[OPTION][x] = interval(time_start,time_stop);
+        printf("iter %ld done\n", x);
     }
     
     
@@ -308,19 +308,6 @@ int print_matrix(matrix_ptr v)
     }
 }
 
-struct timespec diff(struct timespec start, struct timespec end)
-{
-    struct timespec temp;
-    if ((end.tv_nsec-start.tv_nsec)<0) {
-        temp.tv_sec = end.tv_sec-start.tv_sec-1;
-        temp.tv_nsec = 1000000000+end.tv_nsec-start.tv_nsec;
-    } else {
-        temp.tv_sec = end.tv_sec-start.tv_sec;
-        temp.tv_nsec = end.tv_nsec-start.tv_nsec;
-    }
-    return temp;
-}
-
 double fRand(double fMin, double fMax)
 {
     double f = (double)random() / (double)(RAND_MAX);
@@ -374,9 +361,9 @@ void *cb_work(void *threadarg)
             }
         }
         
-        pthread_mutex_lock(&diff);
+        pthread_mutex_lock(&diff_lock);
         differ+=mydiff;
-        pthread_mutex_unlock(&diff);
+        pthread_mutex_unlock(&diff_lock);
         pthread_barrier_wait(&bar);
         
         if(differ/((n-2)*(n-2))<TOL){
@@ -399,7 +386,7 @@ void pt_cb_pthr(matrix_ptr a, matrix_ptr b, matrix_ptr c)
     long t;
     
     pthread_barrier_init(&bar, NULL, NUM_THREADS);
-    if (pthread_mutex_init(&diff, NULL) != 0)
+    if (pthread_mutex_init(&diff_lock, NULL) != 0)
     {
         printf("\n mutex init has failed\n");
     }
@@ -407,9 +394,6 @@ void pt_cb_pthr(matrix_ptr a, matrix_ptr b, matrix_ptr c)
     for (t = 0; t < NUM_THREADS; t++) {
         thread_data_array[t].thread_id = t;
         thread_data_array[t].a = a;
-        thread_data_array[t].b = b;
-        thread_data_array[t].c = c;
-        thread_data_array[t].d = 0;
         rc = pthread_create(&threads[t], NULL, cb_work,
                             (void*) &thread_data_array[t]);
         if (rc) {
@@ -426,5 +410,5 @@ void pt_cb_pthr(matrix_ptr a, matrix_ptr b, matrix_ptr c)
     }
     
     pthread_barrier_destroy(&bar);
-    pthread_mutex_destroy(&diff);
+    pthread_mutex_destroy(&diff_lock);
 }
