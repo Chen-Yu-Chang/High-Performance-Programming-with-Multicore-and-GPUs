@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     int OPTION;
     struct timespec diff(struct timespec start, struct timespec end);
     struct timespec time1, time2;
-    double timespec time_stamp[OPTIONS][NUM_TESTS];
+    double time_stamp[OPTIONS][NUM_TESTS];
     matrix_ptr new_matrix(long int len);
     int set_matrix_length(matrix_ptr m, long int index);
     long int get_matrix_length(matrix_ptr m);
