@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
         printf("%d, ", A*i*i + B*i + C);
         for (j = 0; j < OPTIONS; j++) {
             if (j != 0) printf(", ");
-            printf("%d", (long int)((double)CPNS * 1.0e9 * time_stamp[OPTION][i]));
+            printf(", %10.4g", (double)CPNS * 1.0e9 * time_stamp[OPTION][i]);
         }
         printf("\n");
     }
