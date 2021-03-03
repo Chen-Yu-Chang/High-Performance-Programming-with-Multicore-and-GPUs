@@ -8,7 +8,8 @@
 #include <math.h>
 #include "apple_pthread_barrier.h"
 
-#define CPG 2.4           // Cycles per GHz -- Adjust to your computer
+#define CPNS 2.4           /* Cycles per nanosecond -- Adjust to your computer,
+for example a 3.2 GhZ GPU, this would be 3.2 */
 
 #define A   8   /* coefficient of x^2 */
 #define B   16  /* coefficient of x */
@@ -48,7 +49,7 @@ int main(int argc, char *argv[])
     int OPTION;
     struct timespec diff(struct timespec start, struct timespec end);
     struct timespec time1, time2;
-    struct timespec time_stamp[OPTIONS][ITERS+1];
+    struct timespec time_stamp[OPTIONS][NUM_TESTS];
     matrix_ptr new_matrix(long int len);
     int set_matrix_length(matrix_ptr m, long int index);
     long int get_matrix_length(matrix_ptr m);
@@ -61,11 +62,11 @@ int main(int argc, char *argv[])
     void pt_mb(matrix_ptr a, matrix_ptr b, matrix_ptr c, matrix_ptr d);
     void pt_ob(matrix_ptr a, matrix_ptr b, matrix_ptr c);
     
-    long int i, j, k, n;
+    long int i, j, k, n, x;
     long int alloc_size;
     x = NUM_TESTS-1;
     long int time_sec, time_ns;
-    alloc_size = GHOST + A*x*x + B*x + C;
+    alloc_size = A*x*x + B*x + C;
     printf(" Hello World -- Test SOR pthreads \n");
     
     // declare and initialize the matrix structure
@@ -147,7 +148,7 @@ int main(int argc, char *argv[])
         printf("%d, ", A*i*i + B*i + C);
         for (j = 0; j < OPTIONS; j++) {
             if (j != 0) printf(", ");
-            printf("%ld", (long int)((double)CPNS * 1.0e9 * time_stamp[OPTION][i]);
+            printf("%ld", (long int)((double)CPNS * 1.0e9 * time_stamp[OPTION][i]));
         }
         printf("\n");
     }
