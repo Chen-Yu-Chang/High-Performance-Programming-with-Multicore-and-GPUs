@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     int OPTION;
     struct timespec diff(struct timespec start, struct timespec end);
     struct timespec time1, time2;
-    double time_stamp[OPTIONS][NUM_TESTS];
+    double timespec time_stamp[OPTIONS][NUM_TESTS];
     matrix_ptr new_matrix(long int len);
     int set_matrix_length(matrix_ptr m, long int index);
     long int get_matrix_length(matrix_ptr m);
@@ -148,7 +148,8 @@ int main(int argc, char *argv[])
         printf("%d, ", A*i*i + B*i + C);
         for (j = 0; j < OPTIONS; j++) {
             if (j != 0) printf(", ");
-            printf(", %10.4g", (double)CPNS * 1.0e9 * time_stamp[OPTION][i]);
+            printf("%ld", (long int)((double)(CPG)*(double)
+                                     (10e9 * time_stamp[j][i].tv_sec + time_stamp[j][i].tv_nsec)));
         }
         printf("\n");
     }
