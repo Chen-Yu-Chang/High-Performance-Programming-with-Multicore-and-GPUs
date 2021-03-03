@@ -7,12 +7,12 @@
 #include <pthread.h>
 
 #define GIG 1000000000
-#define CPG 2.9           // Cycles per GHz -- Adjust to your computer
+#define CPG 2.4           // Cycles per GHz -- Adjust to your computer
 
 #define OPTIONS 2
 #define BASE  0
 #define ITERS 1
-#define DELTA 200        // Right now only set up to do one size
+#define DELTA 300        // Right now only set up to do one size
 
 #define BLOCK_SIZE 4
 
