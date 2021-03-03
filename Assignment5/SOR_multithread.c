@@ -9,6 +9,7 @@
 #include <pthread.h>
 #include <time.h>
 #include <math.h>
+#include "apple_pthread_barrier.h"
 
 #define CPNS 2.4    /* Cycles per nanosecond -- Adjust to your computer,
 for example a 3.2 GhZ GPU, this would be 3.2 */
@@ -24,11 +25,12 @@ for example a 3.2 GhZ GPU, this would be 3.2 */
 
 #define INIT_LOW -10.0
 #define INIT_HIGH 10.0
+#define TOL 0.00001
 
 typedef double data_t;
 
 double differ;
-pthread_mutex_t diff;
+pthread_mutex_t diff_lock;
 pthread_barrier_t bar;
 
 /* Create abstract data type for matrix */
@@ -124,9 +126,9 @@ int main(int argc, char *argv[])
     printf("OPTION %d - pt_cb_base()\n", OPTION);
     for (x=0; x<NUM_TESTS && (n = A*x*x + B*x + C, n<=alloc_size); x++) {
         init_matrix_rand(a0,n);
-        set_matrix_length(a0,n);
-        set_matrix_length(b0,n);
-        set_matrix_length(c0,n);
+        set_matrix_rowlen(a0,n);
+        set_matrix_rowlen(b0,n);
+        set_matrix_rowlen(c0,n);
         clock_gettime(CLOCK_REALTIME, &time_start);
         pt_cb_pthr(a0,b0,c0);
         clock_gettime(CLOCK_REALTIME, &time_stop);
@@ -139,9 +141,9 @@ int main(int argc, char *argv[])
     printf("OPTION %d: pt_cb_pthr() with %d threads\n", OPTION, NUM_THREADS);
     for (x=0; x<NUM_TESTS && (n = A*x*x + B*x + C, n<=alloc_size); x++) {
         init_matrix_rand(a0,n);
-        set_matrix_length(a0,n);
-        set_matrix_length(b0,n);
-        set_matrix_length(c0,n);
+        set_matrix_rowlen(a0,n);
+        set_matrix_rowlen(b0,n);
+        set_matrix_rowlen(c0,n);
         clock_gettime(CLOCK_REALTIME, &time_start);
         pt_cb_pthr(a0,b0,c0);
         clock_gettime(CLOCK_REALTIME, &time_stop);
@@ -356,8 +358,8 @@ void *cb_work(void *threadarg)
     data_t *aM = get_matrix_start(a0);
     long int n = get_matrix_rowlen(a0);
     
-    low = 1 + (taskid * rowlen/NUM_THREADS);//(taskid * length * length)/NUM_THREADS;
-    high = low + length/NUM_THREADS - 1;//((taskid+1)* length * length)/NUM_THREADS;
+    low = 1 + (taskid * rowlen/NUM_THREADS);
+    high = low + rowlen/NUM_THREADS - 1;
     
     double temp, mydiff = 0;
     
@@ -366,9 +368,9 @@ void *cb_work(void *threadarg)
         differ = 0;
         for (i = low ;i< high; i++){
             for (j = 1; j<n-1; j++){
-                temp = aM[i*length+j];
-                aM[i*length+j] = 0.2 * (aM[i*length+j] + aM[(i-1)*length+j] + aM[(i+1)*length+j] + aM[i*length+j+1] + aM[i*length+j-1]);
-                mydiff += fabs(aM[i*length+j] - temp);
+                temp = aM[i*rowlen+j];
+                aM[i*rowlen+j] = 0.2 * (aM[i*rowlen+j] + aM[(i-1)*rowlen+j] + aM[(i+1)*rowlen+j] + aM[i*rowlen+j+1] + aM[i*rowlen+j-1]);
+                mydiff += fabs(aM[i*rowlen+j] - temp);
             }
         }
         
