@@ -1,0 +1,22 @@
+ Hello World -- Test SOR pthreads 
+OPTION 0: pt_cb_pthr() with 16 threads
+iter 0 done
+iter 1 done
+iter 2 done
+iter 3 done
+iter 4 done
+OPTION 1: pt_cb_pthr() with 4 threads
+iter 0 done
+iter 1 done
+iter 2 done
+iter 3 done
+iter 4 done
+
+length, other data:
+32, 28382232, 6823706
+56, 25838565, 18374023
+96, 20685902, 66502864
+152, 37431667, 217363994
+224, 97277733, 399901812
+
+ Good Bye World!

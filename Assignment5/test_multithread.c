@@ -14,7 +14,7 @@ for example a 3.2 GhZ GPU, this would be 3.2 */
 #define A   8   /* coefficient of x^2 */
 #define B   16  /* coefficient of x */
 #define C   32  /* constant term */
-#define NUM_TESTS 5
+#define NUM_TESTS 15
 #define OPTIONS 2        // Current setting, vary as you wish!
 #define IDENT 0
 
