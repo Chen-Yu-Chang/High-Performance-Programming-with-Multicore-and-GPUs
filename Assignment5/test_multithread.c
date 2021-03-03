@@ -61,20 +61,22 @@ int main(int argc, char *argv[])
     void pt_mb(matrix_ptr a, matrix_ptr b, matrix_ptr c, matrix_ptr d);
     void pt_ob(matrix_ptr a, matrix_ptr b, matrix_ptr c);
     
-    long int i, j, k;
+    long int i, j, k, n;
+    long int alloc_size;
+    x = NUM_TESTS-1;
     long int time_sec, time_ns;
-    
+    alloc_size = GHOST + A*x*x + B*x + C;
     printf(" Hello World -- Test SOR pthreads \n");
     
     // declare and initialize the matrix structure
-    matrix_ptr a0 = new_matrix(MAXSIZE);
-    init_matrix_rand(a0, MAXSIZE);
-    matrix_ptr b0 = new_matrix(MAXSIZE);
-    init_matrix_rand(b0, MAXSIZE);
-    matrix_ptr c0 = new_matrix(MAXSIZE);
-    zero_matrix(c0, MAXSIZE);
-    matrix_ptr d0 = new_matrix(MAXSIZE);
-    init_matrix_rand_grad(d0, MAXSIZE);
+    matrix_ptr a0 = new_matrix(alloc_size);
+    init_matrix_rand(a0, alloc_size);
+    matrix_ptr b0 = new_matrix(alloc_size);
+    init_matrix_rand(b0, alloc_size);
+    matrix_ptr c0 = new_matrix(alloc_size);
+    zero_matrix(c0, alloc_size);
+    matrix_ptr d0 = new_matrix(alloc_size);
+    init_matrix_rand_grad(d0, alloc_size);
     
     /*OPTION = 0;
      printf("OPTION %d - pt_cb_base()\n", OPTION);
@@ -141,12 +143,11 @@ int main(int argc, char *argv[])
     
     printf("\n");
     printf("length, other data:\n");
-    for (i = 0; i < ITERS; i++) {
-        printf("%d, ", BASE+(i+1)*DELTA);
+    for (i = 0; i < NUM_TESTS; i++) {
+        printf("%d, ", A*i*i + B*i + C);
         for (j = 0; j < OPTIONS; j++) {
             if (j != 0) printf(", ");
-            printf("%ld", (long int)((double)(CPG)*(double)
-                                     (GIG * time_stamp[j][i].tv_sec + time_stamp[j][i].tv_nsec)));
+            printf("%ld", (long int)((double)CPNS * 1.0e9 * time_stamp[OPTION][i]);
         }
         printf("\n");
     }
