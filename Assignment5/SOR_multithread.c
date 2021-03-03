@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
         clock_gettime(CLOCK_REALTIME, &time_start);
         pt_cb_pthr(a0,b0,c0);
         clock_gettime(CLOCK_REALTIME, &time_stop);
-        time_stamp[OPTION][i] = diff(time_start,time_stop);
+        time_stamp[OPTION][x] = diff(time_start,time_stop);
         printf("iter %d done\n", x);
     }
     
@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
         clock_gettime(CLOCK_REALTIME, &time_start);
         pt_cb_pthr(a0,b0,c0);
         clock_gettime(CLOCK_REALTIME, &time_stop);
-        time_stamp[OPTION][i] = diff(time_start,time_stop);
+        time_stamp[OPTION][x] = diff(time_start,time_stop);
         printf("iter %d done\n", x);
     }
     
