@@ -57,7 +57,7 @@ int init_array_rand(arr_ptr v, long int len);
 int print_array(arr_ptr v);
 
 void SOR(arr_ptr v, int *iterations);
-void SOR_redblack(arr_ptr v, int *iterations);
+void SOR_OMP(arr_ptr v, int *iterations);
 void SOR_ji(arr_ptr v, int *iterations);
 void SOR_blocked(arr_ptr v, int *iterations);
 
