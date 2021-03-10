@@ -106,7 +106,18 @@ int main(int argc, char *argv[])
     printf("Printing 'Hello world!' using 'omp parallel for':\n\n    ");
     
     /* ============ ADD YOUR CODE HERE ============ */
-    printf("REPLACE THIS WITH YOUR OWN CODE!\n\n");
+    int N = 12;
+    int i;
+    char string[12] = "Hello World!";
+    //{"H","e","l","l", "o"," ","W", "o","r","l","d","!"};
+    
+#pragma omp parallel for
+    
+    for(i = 0; i<N;i++){
+        printf("%c", string[i]);
+    }
+    
+    printf("\n");
     
     return 0;
 } /* end main */
