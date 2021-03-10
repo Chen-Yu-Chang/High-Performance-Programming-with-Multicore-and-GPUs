@@ -342,7 +342,7 @@ void SOR_OMP(arr_ptr v, int *iterations)
     int iters = 0;
     
     omp_set_num_threads(4);
-#pragma omp parallel shared(data, length, mean_change, iters, change) private(i, j)
+#pragma omp parallel shared(data, length, total_change, iters, change) private(i, j)
     {
         while((total_change/(double)(length*length)) > (double)TOL) {
             iters++;
