@@ -325,9 +325,10 @@ void mmm_ijk_omp(matrix_ptr a, matrix_ptr b, matrix_ptr c)
     {
 
         for (i = 0; i < row_length; i++) {
-            #pragma omp for
+            
             for (j = 0; j < row_length; j++) {
                 sum = 0;
+                #pragma omp for
                 for (k = 0; k < row_length; k++)
                     sum += a0[i*row_length+k] * b0[k*row_length+j];
                 c0[i*row_length+j] += sum;
@@ -373,9 +374,10 @@ void mmm_kij_omp(matrix_ptr a, matrix_ptr b, matrix_ptr c)
     {
 
         for (k = 0; k < row_length; k++) {
-            #pragma omp for
+            
             for (i = 0; i < row_length; i++) {
                 r = a0[i*row_length+k];
+                #pragma omp for
                 for (j = 0; j < row_length; j++)
                     c0[i*row_length+j] += r*b0[k*row_length+j];
             }
