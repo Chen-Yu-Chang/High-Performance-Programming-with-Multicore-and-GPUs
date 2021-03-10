@@ -27,9 +27,9 @@
  their own clocks, sometimes overlapping in time, measuring "how many
  cycles" a program takes is less meaningful. */
 
-#define A   /* coefficient of x^2 */
+#define A   8  /* coefficient of x^2 */
 #define B   8  /* coefficient of x */
-#define C 128  /* constant term */
+#define C   10  /* constant term */
 
 #define NUM_TESTS 20
 
