@@ -337,7 +337,7 @@ void SOR_OMP(arr_ptr v, int *iterations)
 {
     long int i, j;
     long int length = get_arr_rowlen(v);
-    data_t *data = get_arr_start(v);
+    data_t *data = get_array_start(v);
     double change, total_change = 100;   // start w/ something big
     int iters = 0;
     
