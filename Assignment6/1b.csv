@@ -1,0 +1,40 @@
+OpenMP parallel loop tests
+omp's default number of threads is 4
+Using 4 threads for OpenMP
+Doing OPTION=0...
+  iter 0 done  iter 1 done  iter 2 done  iter 3 done  iter 4 done  iter 5 done  iter 6 done  iter 7 done  iter 8 done  iter 9 done  iter 10 done  iter 11 done  iter 12 done  iter 13 done  iter 14 done  iter 15 done  iter 16 done  iter 17 done  iter 18 done  iter 19 done
+Doing OPTION=1...
+  iter 0 done  iter 1 done  iter 2 done  iter 3 done  iter 4 done  iter 5 done  iter 6 done  iter 7 done  iter 8 done  iter 9 done  iter 10 done  iter 11 done  iter 12 done  iter 13 done  iter 14 done  iter 15 done  iter 16 done  iter 17 done  iter 18 done  iter 19 done
+Doing OPTION=2...
+  iter 0 done  iter 1 done  iter 2 done  iter 3 done  iter 4 done  iter 5 done  iter 6 done  iter 7 done  iter 8 done  iter 9 done  iter 10 done  iter 11 done  iter 12 done  iter 13 done  iter 14 done  iter 15 done  iter 16 done  iter 17 done  iter 18 done  iter 19 done
+Doing OPTION=3...
+  iter 0 done  iter 1 done  iter 2 done  iter 3 done  iter 4 done  iter 5 done  iter 6 done  iter 7 done  iter 8 done  iter 9 done  iter 10 done  iter 11 done  iter 12 done  iter 13 done  iter 14 done  iter 15 done  iter 16 done  iter 17 done  iter 18 done  iter 19 done
+Doing OPTION=4...
+  iter 0 done  iter 1 done  iter 2 done  iter 3 done  iter 4 done  iter 5 done  iter 6 done  iter 7 done  iter 8 done  iter 9 done  iter 10 done  iter 11 done  iter 12 done  iter 13 done  iter 14 done  iter 15 done  iter 16 done  iter 17 done  iter 18 done  iter 19 done
+Doing OPTION=5...
+  iter 0 done  iter 1 done  iter 2 done  iter 3 done  iter 4 done  iter 5 done  iter 6 done  iter 7 done  iter 8 done  iter 9 done  iter 10 done  iter 11 done  iter 12 done  iter 13 done  iter 14 done  iter 15 done  iter 16 done  iter 17 done  iter 18 done  iter 19 done
+
+All times are in seconds
+rowlen, cpu_bound_serial, omp_cpu_bound, mem_bound_serial, omp_mem_bound, ooverhead_bound_serial, omp_overhead_bound
+ 128,  0.001156, 0.0006775, 0.0003331, 0.0002047, 2.882e-05, 7.726e-05
+ 144,  0.001393, 0.0006976, 0.0001505, 0.0001364,  2.14e-05, 2.112e-05
+ 176,  0.002081,  0.001052, 0.0002856, 0.0002244, 3.525e-05, 2.812e-05
+ 224,  0.003379,    0.0017, 0.0005367, 0.0003641, 6.139e-05, 4.154e-05
+ 288,  0.005585,  0.002802, 0.0009497,  0.000614, 0.0001039, 7.041e-05
+ 368,   0.00913,  0.004608,  0.001549, 0.0009942, 0.0001673, 0.0001158
+ 464,   0.01448,  0.006763,  0.002464,  0.001582, 0.0002758,  0.000191
+ 576,   0.02237,  0.009927,  0.003683,  0.002422,  0.000471, 0.0002687
+ 704,   0.03337,   0.01379,  0.005426,  0.003621, 0.0008241, 0.0003869
+ 848,   0.04847,   0.01816,  0.007906,   0.00512,  0.001184, 0.0005751
+1008,   0.06862,    0.0231,   0.01173,  0.007622,  0.001661, 0.0007754
+1184,   0.09465,   0.02837,    0.0209,   0.01302,   0.00228,  0.001092
+1376,    0.1278,   0.03396,   0.03565,   0.02225,  0.003102,  0.001483
+1584,    0.1699,   0.04323,   0.05532,   0.03451,  0.004608,  0.002024
+1808,    0.2221,   0.05641,    0.0812,   0.04924,  0.006855,   0.00273
+2048,    0.2854,   0.07226,    0.1142,   0.07017,  0.008817,  0.003683
+2304,    0.3611,   0.09138,    0.1553,   0.09544,   0.01082,  0.005121
+2576,    0.4514,    0.1142,    0.2061,    0.1253,   0.01312,  0.007235
+2864,    0.5583,    0.1414,    0.2671,    0.1597,    0.0157,   0.00974
+3168,    0.6833,    0.1734,    0.3403,    0.2007,   0.01865,   0.01256
+
+Initial delay was calculating: 0.0729728 
