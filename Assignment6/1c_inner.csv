@@ -1,0 +1,26 @@
+OpenMP Matrix Multiply
+omp's default number of threads is 4
+Using 4 threads for OpenMP
+Doing OPTION=0...
+  iter 0 done  iter 1 done  iter 2 done  iter 3 done  iter 4 done  iter 5 done  iter 6 done  iter 7 done  iter 8 done  iter 9 done
+Doing OPTION=1...
+  iter 0 done  iter 1 done  iter 2 done  iter 3 done  iter 4 done  iter 5 done  iter 6 done  iter 7 done  iter 8 done  iter 9 done
+Doing OPTION=2...
+  iter 0 done  iter 1 done  iter 2 done  iter 3 done  iter 4 done  iter 5 done  iter 6 done  iter 7 done  iter 8 done  iter 9 done
+Doing OPTION=3...
+  iter 0 done  iter 1 done  iter 2 done  iter 3 done  iter 4 done  iter 5 done  iter 6 done  iter 7 done  iter 8 done  iter 9 done
+
+All times are in seconds
+rowlen, ijk, ijk_omp, kij, kij_omp
+  80,  0.000554,  0.007499, 0.0004426,  0.009039
+  96, 0.0009749,   0.01049, 0.0007421,   0.01333
+ 128,  0.002431,   0.01784,  0.001682,   0.02383
+ 176,  0.006347,   0.03201,  0.004222,   0.04318
+ 240,   0.01667,   0.06416,   0.01049,   0.08021
+ 320,   0.04153,    0.1153,   0.02463,    0.1569
+ 416,   0.09283,    0.2114,   0.05354,    0.2607
+ 528,    0.1899,    0.3446,    0.1084,    0.4626
+ 656,    0.3716,     0.573,    0.2049,    0.7608
+ 800,     0.674,    0.9467,    0.3691,     1.288
+
+Initial delay was calculating: 0.0729728 
