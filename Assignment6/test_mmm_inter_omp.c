@@ -323,9 +323,9 @@ void mmm_ijk_omp(matrix_ptr a, matrix_ptr b, matrix_ptr c)
     
 #pragma omp parallel shared(a0,b0,c0,row_length) private(i,j,k,sum)
     {
-        //#pragma omp for
+        #pragma omp for
         for (i = 0; i < row_length; i++) {
-            #pragma omp for
+            //#pragma omp for
             for (j = 0; j < row_length; j++) {
                 sum = 0;
                 //#pragma omp for
@@ -372,9 +372,9 @@ void mmm_kij_omp(matrix_ptr a, matrix_ptr b, matrix_ptr c)
     
 #pragma omp parallel shared(a0,b0,c0,row_length) private(i,j,k,r)
     {
-        //#pragma omp for
+        #pragma omp for
         for (k = 0; k < row_length; k++) {
-            #pragma omp for
+            //#pragma omp for
             for (i = 0; i < row_length; i++) {
                 r = a0[i*row_length+k];
                 //#pragma omp for
