@@ -3,7 +3,7 @@ Length of the array = 1024
 Initializing the arrays ...	... done
 
 
-GPU time: 5.018592 (msec)
+GPU time: 4.964384 (msec)
 0:	260.16702271	260.16702271
 1:	264.76211548	264.76211548
 2:	256.09481812	256.09481812
@@ -54,4 +54,4 @@ GPU time: 5.018592 (msec)
 47:	256.92730713	256.92727661
 48:	249.55557251	249.55557251
 49:	244.17973328	244.17974854
-Time elpased is 5.710000 seconds
+Time elapsed is 5.640000 seconds

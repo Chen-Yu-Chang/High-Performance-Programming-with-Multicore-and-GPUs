@@ -16,7 +16,7 @@ inline void gpuAssert(cudaError_t code, char *file, int line, bool abort=true)
 #define NUM_THREADS_PER_BLOCK 	256
 
 #define PRINT_TIME 				1
-#define SM_ARR_LEN				1024
+#define SM_ARR_LEN				2048
 #define NUM_BLOCKS 				6//(SM_ARR_LEN*SM_ARR_LEN + NUM_THREADS_PER_BLOCK-1)/NUM_THREADS_PER_BLOCK
 #define TILE_WIDTH                              16
 #define TOL						1//0.00001
@@ -201,7 +201,7 @@ clock_t end = clock();
 	double time_spent;
 
 	time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
-	printf("Time elpased is %f seconds", time_spent);
+	printf("Time elapsed is %f seconds", time_spent);
 	
 	/*if (errCount > 0) {
 		printf("\n@ERROR: TEST FAILED: %d results did not matched\n", errCount);
